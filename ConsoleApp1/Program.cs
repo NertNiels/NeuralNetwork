@@ -162,7 +162,7 @@ namespace NeuralNetwork
                     Console.WriteLine("You must first initialize a Neural Network");
                     return null;
                 }
-                return nn.feedforwardLayer(input);
+                return nn.feedforward(input);
 
             } catch (Exception e)
             {
@@ -200,8 +200,8 @@ namespace NeuralNetwork
 
         static void TestProgram()
         {
-            
-            
+
+            /*
 
             TrainingData[] training_data = new TrainingData[]
             {
@@ -211,22 +211,45 @@ namespace NeuralNetwork
                 new TrainingData(new float[]{ 1, 0 }, new float[] { 1 }),
             };
 
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 0 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 0 }));
 
             for(int i = 0; i < 50000; i++)
             {
                 int currentIndex = (int)Math.Floor(Lib.NeuralNetwork.random.NextDouble() * training_data.Length);
                 TrainingData train_data = training_data[currentIndex];
-                nn.trainLayers(train_data.inputs, train_data.targets);
+                nn.train(train_data.inputs, train_data.targets);
             }
 
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 0 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 0 }));
+            */
+
+            Matrix m1 = new Matrix(5, 1);
+            m1.data[0, 0] = 4;
+            m1.data[1, 0] = 44;
+            m1.data[2, 0] = 42;
+            m1.data[3, 0] = 50;
+            m1.data[4, 0] = 41;
+            Matrix.table(m1);
+
+            Console.WriteLine(Matrix.sum(m1));
+
+            Matrix m2 = Activation.softmax(m1);
+            Matrix.table(m2);
+
+            Console.WriteLine(Matrix.sum(m2));
+
+
+            Matrix m3 = Matrix.map(Activation.dsoftmax, m2);
+            Matrix.table(m3);
+
+            Console.WriteLine(Matrix.sum(m3));
+
 
         }
 
@@ -268,7 +291,7 @@ namespace NeuralNetwork
 
                             int currentIndex = (int)Math.Floor(r.NextDouble() * training_data.Length);
                             TrainingData train_data = training_data[currentIndex];
-                            nn.trainLayers(train_data.inputs, train_data.targets);
+                            nn.train(train_data.inputs, train_data.targets);
                         }
                         Console.WriteLine("");
                         Console.WriteLine("Training is completed succesfully!");
@@ -278,17 +301,17 @@ namespace NeuralNetwork
 
                 int index = (int)Math.Floor(r.NextDouble() * training_data.Length);
                 TrainingData td = training_data[index];
-                nn.trainLayers(td.inputs, td.targets);
+                nn.train(td.inputs, td.targets);
             } catch (Exception e) { Console.WriteLine("Training failed!"); printError(e); }
             Console.WriteLine("Training is completed succesfully!");
         }
 
         static void printTrainingData()
         {
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 0 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 0, 1 }));
-            Matrix.table(nn.feedforwardLayer(new float[] { 1, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 0 }));
+            Matrix.table(nn.feedforward(new float[] { 0, 1 }));
+            Matrix.table(nn.feedforward(new float[] { 1, 0 }));
         }
     }
 

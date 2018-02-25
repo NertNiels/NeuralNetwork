@@ -52,5 +52,27 @@ namespace NeuralNetwork.Lib
             return 0;
         }
 
+        public static Matrix softmax(Matrix x)
+        {
+            Matrix exp = Matrix.exp(x);
+            float sumExp = Matrix.sum(exp);
+
+            Matrix output = new Matrix(exp.rows, exp.cols);
+
+            for(int i = 0; i < exp.rows; i++)
+            {
+                for(int j = 0; j < exp.cols; j++)
+                {
+                    output.data[i, j] = exp.data[i, j] / sumExp;
+                }
+            }
+            return output;
+        }
+
+        public static float dsoftmax(float y)
+        {
+            return y * (1 - y);
+        }
+
     }
 }

@@ -13,6 +13,11 @@ namespace NeuralNetwork.Lib
         public Matrix bias;
         public Matrix errors;
 
+        public int filterWidth;
+        public int filterHeight;
+        public Filter[] filters;
+        public FeatureMap[] featureMaps;
+
         public int nodes;
 
         public abstract void doFeedForward(Layer prev);

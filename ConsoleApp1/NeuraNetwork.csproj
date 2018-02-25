@@ -43,12 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lib\Activation.cs" />
+    <Compile Include="Lib\Filter.cs" />
     <Compile Include="Lib\Layer.cs" />
-    <Compile Include="Lib\Layers\ConvolutionalLayer.cs" />
+    <Compile Include="Lib\Layers\Convolutional\LeakyReluLayer.cs" />
+    <Compile Include="Lib\Layers\Convolutional\ConvolutionalLayer.cs" />
+    <Compile Include="Lib\Layers\Convolutional\FullyConnectedLayer.cs" />
     <Compile Include="Lib\Layers\DropoutLayer.cs" />
     <Compile Include="Lib\Layers\LeakyReluLayer.cs" />
     <Compile Include="Lib\Layers\ReluLayer.cs" />
     <Compile Include="Lib\Layers\SigmoidLayer.cs" />
+    <Compile Include="Lib\Layers\SoftmaxLayer.cs" />
     <Compile Include="Lib\Matrix.cs" />
     <Compile Include="Lib\ModelLoader.cs" />
     <Compile Include="Lib\NeuralNetwork.cs" />

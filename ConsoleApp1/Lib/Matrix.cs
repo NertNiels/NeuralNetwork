@@ -199,6 +199,33 @@ namespace NeuralNetwork.Lib
             return output;
         }
 
+        public static Matrix exp(Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.cols);
+            for(int i = 0; i < m.rows; i++)
+            {
+                for (int j = 0; j < m.cols; j++)
+                {
+                    output.data[i, j] = (float)Math.Exp((float)m.data[i, j]);
+                }
+            }
+            return output;
+        }
+
+        public static float sum(Matrix m)
+        {
+            float sum = 0;
+            for(int i = 0; i < m.rows; i++)
+            {
+                for(int j = 0; j < m.cols; j++)
+                {
+                    sum += m.data[i, j];
+                }
+            }
+            return sum;
+        }
+        
+
         public static void table(Matrix m)
         {
             if (m == null) return;
