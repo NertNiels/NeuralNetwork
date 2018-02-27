@@ -19,7 +19,14 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)
         {
+            if (next == null) throw new Exception("A convolutional layer cannot be the final layer.");
 
+            for(int f = 0; f < next.featureMaps.Length; f++)
+            {
+                featureMaps[f].errors = next.featureMaps[f].errors;
+
+                featureMaps[f].derivatives = Matrix.map(Activation.dlrelu, featureMaps[f].map);
+            }
         }
     }
 }

@@ -22,6 +22,8 @@ namespace NeuralNetwork.Lib
 
         public abstract void doFeedForward(Layer prev);
         public abstract void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs);
+
+
         
     }
 }

@@ -80,6 +80,26 @@ namespace NeuralNetwork.Lib
             }
         }
 
+        public static Matrix hadamard(Matrix m, Matrix n)
+        {
+
+            if (!(m.rows == n.rows && m.cols == n.cols))
+            {
+                Console.WriteLine("Matrices must have the same dimentions");
+                return null;
+            }
+
+            Matrix output = new Matrix(m.rows, m.cols);
+            for (int i = 0; i < m.rows; i++)
+            {
+                for (int j = 0; j < m.cols; j++)
+                {
+                    output.data[i, j] = m.data[i, j] * n.data[i, j];
+                }
+            }
+            return output;
+        }
+
         public static Matrix multiply(Matrix a, Matrix b)
         {
             if (a.cols != b.rows)
@@ -102,7 +122,7 @@ namespace NeuralNetwork.Lib
             }
             return output;
         }
-
+        
         public void add(int n)
         {
             for (int i = 0; i < rows; i++)
@@ -210,6 +230,19 @@ namespace NeuralNetwork.Lib
                 }
             }
             return output;
+        }
+
+        public float sum()
+        {
+            float sum = 0;
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < cols; j++)
+                {
+                    sum += data[i, j];
+                }
+            }
+            return sum;
         }
 
         public static float sum(Matrix m)

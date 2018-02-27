@@ -15,7 +15,19 @@ namespace NeuralNetwork.Lib
 
         public int dimensions;
 
+        public float bias;
+
         public Matrix[] filters;
+
+        public void updateFilters(Matrix gradient, Matrix deltas)
+        {
+            for (int d = 0; d < dimensions; d++)
+            {
+                filters[d].add(deltas);
+            }
+
+            bias = deltas.sum() / (gradient.rows * gradient.cols);
+        }
     }
 
     class FeatureMap
@@ -24,6 +36,7 @@ namespace NeuralNetwork.Lib
         public int height;
 
         public Matrix errors;
+        public Matrix derivatives;
 
         public Matrix map;
     }
