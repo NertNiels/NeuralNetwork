@@ -44,5 +44,10 @@ namespace NeuralNetwork.Lib.Layers
             prev.weights.add(deltas);
             bias.add(gradient);
         }
+
+        public override void initWeights(Random r, Layer prev, Layer next)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using NeuralNetwork.Lib;
 using NeuralNetwork.Lib.Layers;
+using NeuralNetwork.Lib.Layers.Convolutional;
 
 namespace NeuralNetwork
 {
@@ -112,7 +113,7 @@ namespace NeuralNetwork
                         else if (words[i].Equals("lrelu"))
                         {
                             int nodes = int.Parse(words[i + 1]);
-                            layers[(i - 1) / 2] = new LeakyReluLayer(nodes);
+                            layers[(i - 1) / 2] = new Lib.Layers.LeakyReluLayer(nodes);
                         } else
                         {
                             Console.WriteLine("There is no layer type like \"" + words[i] + "\"");
@@ -200,6 +201,7 @@ namespace NeuralNetwork
 
         static void TestProgram()
         {
+            #region TestPrograms
 
             /*
 
@@ -229,6 +231,7 @@ namespace NeuralNetwork
             Matrix.table(nn.feedforward(new float[] { 1, 0 }));
             */
 
+            /*
             Matrix m1 = new Matrix(5, 1);
             m1.data[0, 0] = 4;
             m1.data[1, 0] = 44;
@@ -249,8 +252,35 @@ namespace NeuralNetwork
             Matrix.table(m3);
 
             Console.WriteLine(Matrix.sum(m3));
+            */
 
+            #endregion
 
+            Layer[] layer = new Layer[]
+            {
+                new ConvolutionalLayer(2, 2, 3, 1, 1),
+                new ConvolutionalLayer(2, 2, 3, 0, 1),
+                new Lib.Layers.Convolutional.LeakyReluLayer(),
+                new ConvolutionalLayer(2, 2, 3, 0, 1),
+                new Lib.Layers.Convolutional.LeakyReluLayer(),
+                new FullyConnectedLayer(12),
+                new SoftmaxLayer(2)
+            };
+
+            Lib.NeuralNetwork neuralNetwork = new Lib.NeuralNetwork(Lib.NeuralNetwork.random, layer);
+
+            Matrix input = new Matrix(4, 4);
+            input.data = new float[,]
+            {
+                {1, 2, 3, 4 },
+                {5, 6, 7, 8 },
+                {9, 1, 2, 3 },
+                {4, 5, 6, 7 }
+            };
+
+            Matrix output = neuralNetwork.feedforward(input);
+
+            Matrix.table(output);
         }
 
         static void Train(String[] words)

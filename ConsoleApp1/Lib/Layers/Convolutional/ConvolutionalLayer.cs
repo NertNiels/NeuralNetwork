@@ -28,16 +28,18 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         {
             //throw new NotImplementedException();
 
-            int width = (prev.featureMaps[0].width - filterWidth + 2 * padding) / stride + 1;
-            int height = (prev.featureMaps[0].height - filterHeight + 2 * padding) / stride + 1;
+            int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
+            int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
 
+            featureMaps = new FeatureMap[filters.Length];
                         
             for(int f = 0; f < prev.filters.Length; f++)
             {
                 int mapX = 0;
                 int mapY = 0;
 
-                featureMaps[f] = new FeatureMap() { width = width, height = height };
+                featureMaps[f] = new FeatureMap() { map = new Matrix(width, height) };
+
 
                 for (int i = -padding; i < width+padding; i += stride)
                 {
@@ -46,13 +48,13 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                         float sum = 0;
                         for (int d = 0; d < prev.filters[f].dimensions; f++)
                         {
-                            Matrix flipped = prev.filters[f].filters[d].flip();
+                            Matrix flipped = prev.filters[f].kernels[d].flip();
 
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
-                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0)) sum +=
+                                    if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) sum +=
                                             prev.featureMaps[d].map.data[k, l] *
                                             flipped.data[i + k, j + l];
                                 }
@@ -67,6 +69,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     }
 
                     mapX++;
+                    mapY = 0;
                     
                 }
             }
@@ -81,7 +84,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 throw new Exception("A Convolutional layer must have an activation layer behind it in order to make it work.");
             }
 
-            for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width, prev.featureMaps[f].height);
+            for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width(), prev.featureMaps[f].height());
 
             for(int f = 0; f < prev.filters.Length; f++)
             {
@@ -92,15 +95,15 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 //Calculating Deltas And Errors
                 #region Calculating Deltas And Errors
 
-                Matrix deltas = new Matrix(prev.filters[f].width, prev.filters[f].height);
+                Matrix deltas = new Matrix(prev.filters[f].width(), prev.filters[f].height());
 
                 int mapX = 0;
                 int mapY = 0;
 
-                int width = (prev.featureMaps[0].width - filterWidth + 2 * padding) / stride + 1;
-                int height = (prev.featureMaps[0].height - filterHeight + 2 * padding) / stride + 1;
+                int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
+                int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
 
-                featureMaps[f] = new FeatureMap() { width = width, height = height };
+                featureMaps[f] = new FeatureMap() { map = new Matrix(width, height) };
 
                 for (int i = -padding; i < width + padding; i += stride)
                 {
@@ -108,7 +111,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     {
                         for (int d = 0; d < prev.filters[f].dimensions; f++)
                         {
-                            Matrix flipped = prev.filters[f].filters[d].flip();
+                            Matrix flipped = prev.filters[f].kernels[d].flip();
                             
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
@@ -116,7 +119,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                 {
                                     float currentMapValue = prev.featureMaps[f].map.data[i, j];
 
-                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0))
+                                    if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0))
                                     {
                                         deltas.data[k, l] +=
                                             prev.featureMaps[f].map.data[i, j] *
@@ -124,7 +127,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                                         prev.featureMaps[d].errors.data[i + k, j + l] +=
                                             featureMaps[f].errors.data[mapX, mapY] *
-                                            prev.filters[f].filters[d].data[k, l];
+                                            prev.filters[f].kernels[d].data[k, l];
                                     }
                                 }
                             }
@@ -148,12 +151,13 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             }
 
             #region ErrorTest
+            /*
             for(int d = 0; d < prev.featureMaps.Length; d++)
             {
-                Matrix errorMatrix = new Matrix(prev.featureMaps[0].width, prev.featureMaps[0].height);
+                Matrix errorMatrix = new Matrix(prev.featureMaps[0].width(), prev.featureMaps[0].height());
 
-                int width = (prev.featureMaps[0].width - filterWidth + 2 * padding) / stride + 1;
-                int height = (prev.featureMaps[0].height - filterHeight + 2 * padding) / stride + 1;
+                int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
+                int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
 
                 int mapX = 0;
                 int mapY = 0;
@@ -170,7 +174,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                             {
                                 for(int l = 0; l < flipped.cols; l++)
                                 {
-                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0)) errorMatrix.data[i + k, j + l] +=
+                                    if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) errorMatrix.data[i + k, j + l] +=
                                             featureMaps[f].errors.data[mapX, mapY] *
                                             prev.filters[f].filters[d].data[k, l];
                                 }
@@ -185,32 +189,21 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                 prev.featureMaps[d].errors = errorMatrix;
             }
+            */
             #endregion
 
         }
 
-        public static Matrix doDropout(Matrix input, float dropoutChance)
+        public override void initWeights(Random r, Layer prev, Layer next)
         {
-            for (int i = 0; i < input.rows; i++)
+            int num = 1;
+            if (prev != null) num = prev.filters.Length;
+
+            for(int f = 0; f < filters.Length; f++)
             {
-                for (int j = 0; j < input.cols; j++)
-                {
-                    float chance = (float)NeuralNetwork.random.NextDouble();
-                    if (chance <= dropoutChance)
-                    {
-                        input.data[i, j] = 0;
-                    }
-                }
+                filters[f] = new Filter();
+                filters[f].initFilter(r, num);
             }
-
-            return input;
-        }
-
-        public static Matrix doRelu(Matrix input)
-        {
-            Matrix m = Matrix.map(Activation.lrelu, input);
-
-            return m;
         }
     }
 }

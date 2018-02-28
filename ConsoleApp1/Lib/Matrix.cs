@@ -104,8 +104,7 @@ namespace NeuralNetwork.Lib
         {
             if (a.cols != b.rows)
             {
-                Console.WriteLine("Cols of A and Rows of B must be equaled");
-                return null;
+                throw new Exception("Cols of A and Rows of B must be equaled");
             }
             Matrix output = new Matrix(a.rows, b.cols);
             for (int i = 0; i < a.rows; i++)
@@ -138,8 +137,7 @@ namespace NeuralNetwork.Lib
         {
             if (!(rows == m.rows && cols == m.cols))
             {
-                Console.WriteLine("Matrices must have the same dimentions");
-                return;
+                throw new Exception("Matrices must have the same dimentions");
             }
             for (int i = 0; i < rows; i++)
             {

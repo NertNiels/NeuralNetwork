@@ -23,7 +23,7 @@ namespace NeuralNetwork.Lib
         public abstract void doFeedForward(Layer prev);
         public abstract void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs);
 
-
+        public abstract void initWeights(Random r, Layer prev, Layer next);
         
     }
 }

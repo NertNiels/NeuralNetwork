@@ -50,14 +50,17 @@ namespace NeuralNetwork.Lib
         public NeuralNetwork(Random r, Layer[] layers)
         {
             this.layers = layers;
-            for(int i = 0; i < layers.Length-1; i++)
+            for (int i = 0; i < this.layers.Length ; i++)
             {
-                this.layers[i].weights.randomize(r);
-                this.layers[i].bias.randomize(r);
+                Layer prev = null;
+                Layer next = null;
+                if (i != 0) prev = this.layers[i - 1];
+                if (i != this.layers.Length - 1) next = this.layers[i + 1];
+
+                this.layers[i].initWeights(r, prev, next);
             }
         }
         
-
         public Matrix feedforward(float[] input_arr)
         {
             layers[0].values = Matrix.fromArray(input_arr);
@@ -69,8 +72,21 @@ namespace NeuralNetwork.Lib
 
             return layers.Last().values;
         }
-        
-        
+
+        public Matrix feedforward(Matrix input_arr)
+        {
+            if (layers[0].GetType() != typeof(Layers.Convolutional.ConvolutionalLayer)) ;
+
+            layers[0].featureMaps = new FeatureMap[] { new FeatureMap() { map = input_arr } };
+
+            for (int i = 1; i < layers.Length; i++)
+            {
+                layers[i].doFeedForward(layers[i - 1]);
+            }
+
+            return layers.Last().values;
+        }
+
 
         public void train(float[] input_arr, float[] target_arr)
         {

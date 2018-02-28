@@ -10,30 +10,56 @@ namespace NeuralNetwork.Lib
 {
     class Filter
     {
-        public int width;
-        public int height;
+        public int width()
+        {
+            if (kernels == null || kernels.Length == 0) return 0;
+            return kernels[0].rows;
+        }
+        public int height()
+        {
+            if (kernels == null || kernels.Length == 0) return 0;
+            return kernels[0].cols;
+        }
 
         public int dimensions;
 
         public float bias;
 
-        public Matrix[] filters;
+        public Matrix[] kernels;
 
         public void updateFilters(Matrix gradient, Matrix deltas)
         {
             for (int d = 0; d < dimensions; d++)
             {
-                filters[d].add(deltas);
+                kernels[d].add(deltas);
             }
 
             bias = deltas.sum() / (gradient.rows * gradient.cols);
+        }
+
+        public void initFilter(Random r, int numOfLayers)
+        {
+            kernels = new Matrix[numOfLayers];
+            for(int d = 0; d < dimensions; d++)
+            {
+                kernels[d].randomize(r);
+            }
+            bias = (float)r.NextDouble();
         }
     }
 
     class FeatureMap
     {
-        public int width;
-        public int height;
+        public int width()
+        {
+            if (map == null) return 0;
+            return map.rows;
+        }
+        public int height()
+        {
+            if (map == null) return 0;
+            return map.cols;
+        }
 
         public Matrix errors;
         public Matrix derivatives;

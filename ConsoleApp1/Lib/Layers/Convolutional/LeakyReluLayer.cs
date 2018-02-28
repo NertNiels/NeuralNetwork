@@ -13,7 +13,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             featureMaps = new FeatureMap[prev.featureMaps.Length];
             for(int i = 0; i < featureMaps.Length; i++)
             {
-                featureMaps[i] = new FeatureMap() { width = prev.featureMaps[0].width, height = prev.featureMaps[0].height, map = Matrix.map(Activation.lrelu, prev.featureMaps[i].map) };
+                featureMaps[i] = new FeatureMap() { map = Matrix.map(Activation.lrelu, prev.featureMaps[i].map) };
             }
         }
 
@@ -27,6 +27,11 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                 featureMaps[f].derivatives = Matrix.map(Activation.dlrelu, featureMaps[f].map);
             }
+        }
+
+        public override void initWeights(Random r, Layer prev, Layer next)
+        {
+            filters = prev.filters;
         }
     }
 }
