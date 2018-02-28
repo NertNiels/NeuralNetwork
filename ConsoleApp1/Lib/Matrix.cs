@@ -257,8 +257,33 @@ namespace NeuralNetwork.Lib
             }
             return sum;
         }
-        
 
+        public Matrix flip()
+        {
+            Matrix output = new Matrix(rows, cols);
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < cols; j++)
+                {
+                    output.data[i, j] = data[(rows-1) - i, (cols-1) - j];
+                }
+            }
+            return output;
+        }
+
+        public static Matrix flip(Matrix m)
+        {
+            Matrix output = new Matrix(m.rows, m.cols);
+            for (int i = 0; i < m.rows; i++)
+            {
+                for (int j = 0; j < m.cols; j++)
+                {
+                    output.data[i, j] = m.data[(m.rows - 1) - i, (m.cols - 1) - j];
+                }
+            }
+            return output;
+        }
+        
         public static void table(Matrix m)
         {
             if (m == null) return;

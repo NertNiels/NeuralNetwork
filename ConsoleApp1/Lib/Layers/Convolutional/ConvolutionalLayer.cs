@@ -46,13 +46,15 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                         float sum = 0;
                         for (int d = 0; d < prev.filters[f].dimensions; f++)
                         {
+                            Matrix flipped = prev.filters[f].filters[d].flip();
+
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
                                     if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0)) sum +=
                                             prev.featureMaps[d].map.data[k, l] *
-                                            prev.filters[f].filters[d].data[i + k, j + l];
+                                            flipped.data[i + k, j + l];
                                 }
                             }
                         }
@@ -79,14 +81,16 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 throw new Exception("A Convolutional layer must have an activation layer behind it in order to make it work.");
             }
 
+            for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width, prev.featureMaps[f].height);
+
             for(int f = 0; f < prev.filters.Length; f++)
             {
                 //Calculating Gradient
                 Matrix gradient = Matrix.hadamard(next.featureMaps[f].derivatives, featureMaps[f].errors);
                 gradient.multiply(NeuralNetwork.lr);
 
-                //Calculating Deltas
-                #region Calculating Deltas
+                //Calculating Deltas And Errors
+                #region Calculating Deltas And Errors
 
                 Matrix deltas = new Matrix(prev.filters[f].width, prev.filters[f].height);
 
@@ -104,15 +108,24 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     {
                         for (int d = 0; d < prev.filters[f].dimensions; f++)
                         {
+                            Matrix flipped = prev.filters[f].filters[d].flip();
+                            
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
                                     float currentMapValue = prev.featureMaps[f].map.data[i, j];
 
-                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0)) deltas.data[k, l] +=
+                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0))
+                                    {
+                                        deltas.data[k, l] +=
                                             prev.featureMaps[f].map.data[i, j] *
                                             gradient.data[mapX, mapY];
+
+                                        prev.featureMaps[d].errors.data[i + k, j + l] +=
+                                            featureMaps[f].errors.data[mapX, mapY] *
+                                            prev.filters[f].filters[d].data[k, l];
+                                    }
                                 }
                             }
                         }
@@ -130,9 +143,49 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 #endregion
 
                 //Updating Weights and Biases
-                prev.filters[f].updateFilters(gradient, deltas);
+                prev.filters[f].updateFilters(gradient, deltas.flip());
 
             }
+
+            #region ErrorTest
+            for(int d = 0; d < prev.featureMaps.Length; d++)
+            {
+                Matrix errorMatrix = new Matrix(prev.featureMaps[0].width, prev.featureMaps[0].height);
+
+                int width = (prev.featureMaps[0].width - filterWidth + 2 * padding) / stride + 1;
+                int height = (prev.featureMaps[0].height - filterHeight + 2 * padding) / stride + 1;
+
+                int mapX = 0;
+                int mapY = 0;
+
+                for (int f = 0; f < prev.filters.Length; f++)
+                {
+                    Matrix flipped = prev.filters[f].filters[d].flip();
+
+                    for (int i = -padding; i < width + padding; i += stride)
+                    {
+                        for (int j = -padding; j < height + padding; j += stride)
+                        {
+                            for(int k = 0; k < flipped.rows; k++)
+                            {
+                                for(int l = 0; l < flipped.cols; l++)
+                                {
+                                    if (!(i + k >= prev.featureMaps[0].width || i + k < 0 || j + l >= prev.featureMaps[0].height || j + l < 0)) errorMatrix.data[i + k, j + l] +=
+                                            featureMaps[f].errors.data[mapX, mapY] *
+                                            prev.filters[f].filters[d].data[k, l];
+                                }
+                            }
+
+                            mapY++;
+                        }
+
+                        mapX++;
+                    }
+                }
+
+                prev.featureMaps[d].errors = errorMatrix;
+            }
+            #endregion
 
         }
 
