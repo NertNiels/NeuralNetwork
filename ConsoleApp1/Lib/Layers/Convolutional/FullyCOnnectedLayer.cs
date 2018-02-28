@@ -36,7 +36,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)
         {
-            if (next == null) throw new Exception("The last layer of a neural network must not be a fully connected layer.");
+            if (next == null) throw new Exception("The last layer of a neural network cannot be a fully connected layer.");
 
             Matrix weights_T = Matrix.transpose(weights);
             errors = Matrix.multiply(weights_T, next.errors);
@@ -49,7 +49,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 {
                     for(int y = 0; y <featureMaps[f].height; y++)
                     {
-                        featureMaps[f].errors.data[x, y] = errors.data[i, 0];
+                        prev.featureMaps[f].errors.data[x, y] = errors.data[i, 0];
                         i++;
                     }
                 }

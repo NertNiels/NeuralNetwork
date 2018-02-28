@@ -23,7 +23,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
             for(int f = 0; f < next.featureMaps.Length; f++)
             {
-                featureMaps[f].errors = next.featureMaps[f].errors;
+                prev.featureMaps[f].errors = featureMaps[f].errors;
 
                 featureMaps[f].derivatives = Matrix.map(Activation.dlrelu, featureMaps[f].map);
             }

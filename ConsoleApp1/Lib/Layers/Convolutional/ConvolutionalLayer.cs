@@ -76,14 +76,13 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)
         {
             if (next.GetType() == typeof(ConvolutionalLayer)) {
-                Console.WriteLine("A Convolutional layer must have an activation layer behind it in order to make it work.");
-                return;
+                throw new Exception("A Convolutional layer must have an activation layer behind it in order to make it work.");
             }
 
             for(int f = 0; f < prev.filters.Length; f++)
             {
                 //Calculating Gradient
-                Matrix gradient = Matrix.hadamard(next.featureMaps[f].derivatives, next.featureMaps[f].errors);
+                Matrix gradient = Matrix.hadamard(next.featureMaps[f].derivatives, featureMaps[f].errors);
                 gradient.multiply(NeuralNetwork.lr);
 
                 //Calculating Deltas
