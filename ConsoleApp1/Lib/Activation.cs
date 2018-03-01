@@ -76,7 +76,9 @@ namespace NeuralNetwork.Lib
 
         public static Matrix ssoftmax(Matrix x)
         {
-            x.subtract(Matrix.max(x));
+            float max = Matrix.max(x);
+
+            Matrix shiftx = Matrix.subtract(x, max);
 
             Matrix exp = Matrix.exp(x);
             float sumExp = Matrix.sum(exp);

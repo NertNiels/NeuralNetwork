@@ -35,7 +35,7 @@ namespace NeuralNetwork.Lib.Layers
 
             gradient.hadamard(errors);
             gradient.multiply(NeuralNetwork.lr);
-
+            
             // Calculating Deltas
             Matrix prevLayer_T = Matrix.transpose(prev.values);
             Matrix deltas = Matrix.multiply(gradient, prevLayer_T);

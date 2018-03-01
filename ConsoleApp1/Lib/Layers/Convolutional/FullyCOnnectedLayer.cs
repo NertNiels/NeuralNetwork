@@ -31,7 +31,6 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 }
             }
 
-            output = Activation.softmax(output);
 
             values = output;
 

@@ -281,11 +281,15 @@ namespace NeuralNetwork
             Matrix output = neuralNetwork.feedforward(input);
             Matrix.table(output);
 
-            for(int i = 0; i < 1000; i++) neuralNetwork.train(input, new float[] { 1, 0 });
+            for (int i = 0; i < 20; i++)
+            {
+                neuralNetwork.train(input, new float[] { 1, 0 });
+                Console.WriteLine("Iteration: " + (i + 1));
+                output = neuralNetwork.feedforward(input);
+                Matrix.table(output);
+            }
 
-
-            output = neuralNetwork.feedforward(input);
-            Matrix.table(output);
+            
 
         }
 

@@ -137,7 +137,7 @@ namespace NeuralNetwork.Lib
         {
             if (!(rows == m.rows && cols == m.cols))
             {
-                throw new Exception("Matrices must have the same dimentions");
+                throw new Exception("Matrices must have the same dimensions");
             }
             for (int i = 0; i < rows; i++)
             {
@@ -173,6 +173,20 @@ namespace NeuralNetwork.Lib
                     data[i, j] -= m.data[i, j];
                 }
             }
+        }
+
+        public static Matrix subtract(Matrix n, float s)
+        {
+            Matrix m = new Matrix(n.rows, n.cols);
+
+            for (int i = 0; i < n.rows; i++)
+            {
+                for (int j = 0; j < n.cols; j++)
+                {
+                    m.data[i, j] -= n.data[i, j] - s;
+                }
+            }
+            return m;
         }
 
         public static Matrix subtract(Matrix a, Matrix b)
