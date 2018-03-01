@@ -37,11 +37,13 @@ namespace NeuralNetwork.Lib
             bias = deltas.sum() / (gradient.rows * gradient.cols);
         }
 
-        public void initFilter(Random r, int numOfLayers)
+        public void initFilter(Random r, int numOfLayers, int width, int height)
         {
             kernels = new Matrix[numOfLayers];
+            dimensions = numOfLayers;
             for(int d = 0; d < dimensions; d++)
             {
+                kernels[d] = new Matrix(width, height);
                 kernels[d].randomize(r);
             }
             bias = (float)r.NextDouble();

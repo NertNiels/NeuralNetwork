@@ -148,7 +148,7 @@ namespace NeuralNetwork.Lib
             }
         }
 
-        public void subtract(int n)
+        public void subtract(float n)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -254,6 +254,19 @@ namespace NeuralNetwork.Lib
                 }
             }
             return sum;
+        }
+
+        public static float max(Matrix m)
+        {
+            float curMax = 0;
+            for(int i = 0; i < m.rows; i++)
+            {
+                for(int j = 0; j < m.cols; j++)
+                {
+                    curMax = Math.Max(curMax, m.data[i, j]);
+                }
+            }
+            return curMax;
         }
 
         public Matrix flip()

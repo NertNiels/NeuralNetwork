@@ -46,7 +46,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     for (int j = -padding; j < height+padding; j += stride)
                     {
                         float sum = 0;
-                        for (int d = 0; d < prev.filters[f].dimensions; f++)
+                        for (int d = 0; d < prev.filters[f].dimensions; d++)
                         {
                             Matrix flipped = prev.filters[f].kernels[d].flip();
 
@@ -55,8 +55,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
                                     if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) sum +=
-                                            prev.featureMaps[d].map.data[k, l] *
-                                            flipped.data[i + k, j + l];
+                                            prev.featureMaps[d].map.data[i + k, j + l] *
+                                            flipped.data[k, l];
                                 }
                             }
                         }
@@ -103,26 +103,27 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
                 int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
 
-                featureMaps[f] = new FeatureMap() { map = new Matrix(width, height) };
+                //featureMaps[f] = new FeatureMap() { map = new Matrix(width, height) };
 
                 for (int i = -padding; i < width + padding; i += stride)
                 {
                     for (int j = -padding; j < height + padding; j += stride)
                     {
-                        for (int d = 0; d < prev.filters[f].dimensions; f++)
+                        for (int d = 0; d < prev.filters[f].dimensions; d++)
                         {
                             Matrix flipped = prev.filters[f].kernels[d].flip();
+
                             
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
-                                    float currentMapValue = prev.featureMaps[f].map.data[i, j];
+
 
                                     if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0))
                                     {
                                         deltas.data[k, l] +=
-                                            prev.featureMaps[f].map.data[i, j] *
+                                            prev.featureMaps[d].map.data[i, j] *
                                             gradient.data[mapX, mapY];
 
                                         prev.featureMaps[d].errors.data[i + k, j + l] +=
@@ -140,6 +141,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     }
 
                     mapX++;
+                    mapY = 0;
 
                 }
 
@@ -154,17 +156,17 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             /*
             for(int d = 0; d < prev.featureMaps.Length; d++)
             {
-                Matrix errorMatrix = new Matrix(prev.featureMaps[0].width(), prev.featureMaps[0].height());
+                Matrix errorMatrix = new Matrix(featureMaps[0].width(), featureMaps[0].height());
 
-                int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
-                int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
+                int width = (featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
+                int height = (featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
 
                 int mapX = 0;
                 int mapY = 0;
 
-                for (int f = 0; f < prev.filters.Length; f++)
+                for (int f = 0; f < filters.Length; f++)
                 {
-                    Matrix flipped = prev.filters[f].filters[d].flip();
+                    Matrix flipped = filters[f].kernels[d].flip();
 
                     for (int i = -padding; i < width + padding; i += stride)
                     {
@@ -175,8 +177,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                 for(int l = 0; l < flipped.cols; l++)
                                 {
                                     if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) errorMatrix.data[i + k, j + l] +=
-                                            featureMaps[f].errors.data[mapX, mapY] *
-                                            prev.filters[f].filters[d].data[k, l];
+                                            next.featureMaps[f].errors.data[mapX, mapY] *
+                                            filters[f].kernels[d].data[k, l];
                                 }
                             }
 
@@ -187,7 +189,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     }
                 }
 
-                prev.featureMaps[d].errors = errorMatrix;
+                featureMaps[d].errors = errorMatrix;
             }
             */
             #endregion
@@ -202,7 +204,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             for(int f = 0; f < filters.Length; f++)
             {
                 filters[f] = new Filter();
-                filters[f].initFilter(r, num);
+                filters[f].initFilter(r, num, filterWidth, filterHeight);
             }
         }
     }

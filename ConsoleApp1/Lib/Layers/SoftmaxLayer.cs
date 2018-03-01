@@ -17,7 +17,7 @@ namespace NeuralNetwork.Lib.Layers
         {
             values = Matrix.multiply(prev.weights, prev.values);
             values.add(bias);
-            values = Activation.softmax(values);
+            values = Activation.ssoftmax(values);
         }
 
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)

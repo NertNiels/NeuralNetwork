@@ -106,7 +106,23 @@ namespace NeuralNetwork.Lib
             isTraining = false;
         }
 
+        public void train(Matrix input_arr, float[]target_arr)
+        {
+            isTraining = true;
 
+            Matrix outputs = feedforward(input_arr);
+
+            Matrix targets = Matrix.fromArray(target_arr);
+
+            for (int i = layers.Length - 1; i > 0; i--)
+            {
+                Layer nextLayer = null;
+                if (i != layers.Length - 1) nextLayer = layers[i + 1];
+                layers[i].doTrain(layers[i - 1], nextLayer, targets, outputs);
+            }
+
+            isTraining = false;
+        }
         
     }
 

@@ -11,6 +11,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         public override void doFeedForward(Layer prev)
         {
             featureMaps = new FeatureMap[prev.featureMaps.Length];
+            filters = prev.filters;
             for(int i = 0; i < featureMaps.Length; i++)
             {
                 featureMaps[i] = new FeatureMap() { map = Matrix.map(Activation.lrelu, prev.featureMaps[i].map) };
@@ -32,6 +33,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         public override void initWeights(Random r, Layer prev, Layer next)
         {
             filters = prev.filters;
+            filterWidth = prev.filterWidth;
+            filterHeight = prev.filterHeight;
         }
     }
 }

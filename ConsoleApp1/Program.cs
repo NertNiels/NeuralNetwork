@@ -279,8 +279,14 @@ namespace NeuralNetwork
             };
 
             Matrix output = neuralNetwork.feedforward(input);
-
             Matrix.table(output);
+
+            for(int i = 0; i < 1000; i++) neuralNetwork.train(input, new float[] { 1, 0 });
+
+
+            output = neuralNetwork.feedforward(input);
+            Matrix.table(output);
+
         }
 
         static void Train(String[] words)
