@@ -13,8 +13,8 @@ namespace NeuralNetwork.Lib
 
         public static TrainingData[] loadTestMNSIT(String filePath)
         {
-            FileStream ifsLabels = new FileStream(@"C:\Users\drumm\Desktop\MNIST\t10k-labels.idx1-ubyte", FileMode.Open);
-            FileStream ifsImages = new FileStream(@"C:\Users\drumm\Desktop\MNIST\t10k-images.idx1-ubyte", FileMode.Open);
+            FileStream ifsLabels = new FileStream(filePath + "\\t10k-labels.idx1-ubyte", FileMode.Open);
+            FileStream ifsImages = new FileStream(filePath + "\\t10k-images.idx3-ubyte", FileMode.Open);
 
             BinaryReader brLabels = new BinaryReader(ifsLabels);
             BinaryReader brImages = new BinaryReader(ifsImages);
@@ -38,13 +38,13 @@ namespace NeuralNetwork.Lib
                     for (int j = 0; j < 28; j++)
                     {
                         byte b = brImages.ReadByte();
-                        pixels.data[i, j] = (float)b;
+                        pixels.data[i, j] = (float)b / 255f;
                     }
                 }
 
                 byte lbl = brLabels.ReadByte();
 
-                Matrix label = new Matrix(9, 1);
+                Matrix label = new Matrix(10, 1);
                 label.data[lbl, 0] = 1;
 
                 trainingData[di] = new TrainingData(pixels, label);

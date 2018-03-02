@@ -28,10 +28,10 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         {
             //throw new NotImplementedException();
 
-            int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
-            int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
+            int width = (prev.featureMaps[0].width() - filterWidth + (2 * padding)) / stride + 1;
+            int height = (prev.featureMaps[0].height() - filterHeight + (2 * padding)) / stride + 1;
 
-            featureMaps = new FeatureMap[filters.Length];
+            featureMaps = new FeatureMap[prev.filters.Length];
                         
             for(int f = 0; f < prev.filters.Length; f++)
             {

@@ -106,7 +106,7 @@ namespace NeuralNetwork.Lib
             isTraining = false;
         }
 
-        public void train(Matrix input_arr, float[]target_arr)
+        public void train(Matrix input_arr, float[] target_arr)
         {
             isTraining = true;
 
@@ -123,7 +123,43 @@ namespace NeuralNetwork.Lib
 
             isTraining = false;
         }
+
+        public float train(Matrix inputs, Matrix targets)
+        {
+            isTraining = true;
+
+            Matrix outputs = feedforward(inputs);
+            
+
+            for (int i = layers.Length - 1; i > 0; i--)
+            {
+                Layer nextLayer = null;
+                if (i != layers.Length - 1) nextLayer = layers[i + 1];
+                layers[i].doTrain(layers[i - 1], nextLayer, targets, outputs);
+            }
+
+            isTraining = false;
+
+            return MSE(layers[layers.Length - 1].errors);
+        }
         
+        public float MSE(Matrix errors)
+        {
+            float sum = 0;
+            for(int i = 0; i < errors.rows; i++)
+            {
+                for(int j = 0; j < errors.cols; j++)
+                {
+                    sum += errors.data[i, j] * errors.data[i, j];
+                }
+            }
+            float output = sum / (errors.rows * errors.cols);
+            if(float.IsNaN(output))
+            {
+                Console.WriteLine("DOAR HEBJM!");
+            }
+            return output;
+        }
     }
 
     

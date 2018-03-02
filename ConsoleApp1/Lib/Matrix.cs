@@ -161,10 +161,9 @@ namespace NeuralNetwork.Lib
 
         public void subtract(Matrix m)
         {
-            if (!(rows == m.rows && cols == m.cols))
+            if (!(rows == m.rows || cols == m.cols))
             {
-                Console.WriteLine("Matrices must have the same dimentions");
-                return;
+                throw new Exception("Matrices must have the same dimentions");
             }
             for (int i = 0; i < rows; i++)
             {
@@ -191,10 +190,9 @@ namespace NeuralNetwork.Lib
 
         public static Matrix subtract(Matrix a, Matrix b)
         {
-            if (!(a.rows == b.rows && a.cols == b.cols))
+            if (a.rows != b.rows || a.cols != b.cols)
             {
-                Console.WriteLine("Matrices must have the same dimentions");
-                return null;
+                throw new Exception("Matrices must have the same dimentions");
             }
             Matrix output = new Matrix(a.rows, a.cols);
             for (int i = 0; i < a.rows; i++)

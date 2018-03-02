@@ -281,7 +281,7 @@ namespace NeuralNetwork
             Matrix output = neuralNetwork.feedforward(input);
             Matrix.table(output);
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 neuralNetwork.train(input, new float[] { 1, 0 });
                 Console.WriteLine("Iteration: " + (i + 1));
@@ -295,54 +295,35 @@ namespace NeuralNetwork
 
         static void Train(String[] words)
         {
-            try
+            Layer[] layer = new Layer[]
             {
-                if (nn == null)
-                {
-                    Console.WriteLine("you must first initialize a Neural Network.");
-                    return;
-                }
+                    new ConvolutionalLayer(3, 3, 3, 0, 2),
+                    new ConvolutionalLayer(3, 3, 3, 0, 2),          //26
+                    new Lib.Layers.Convolutional.LeakyReluLayer(),
+                    new ConvolutionalLayer(2, 2, 3, 0, 2),          //24
+                    new Lib.Layers.Convolutional.LeakyReluLayer(),
+                    new ConvolutionalLayer(2, 2, 3, 0, 2),          //22
+                    new Lib.Layers.Convolutional.LeakyReluLayer(),
+                    new FullyConnectedLayer(27),
+                    new SoftmaxLayer(10)
+            };
 
-                Random r = new Random();
+            nn = new Lib.NeuralNetwork(Lib.NeuralNetwork.random, layer);
 
-                TrainingData[] training_data = new TrainingData[]
-                {
-                new TrainingData(new float[]{ 0, 1 }, new float[] { 1 }),
-                new TrainingData(new float[]{ 1, 1 }, new float[] { 0 }),
-                new TrainingData(new float[]{ 0, 0 }, new float[] { 0 }),
-                new TrainingData(new float[]{ 1, 0 }, new float[] { 1 }),
-                };
+            if (nn == null)
+            {
+                Console.WriteLine("you must first initialize a Neural Network.");
+                return;
+            }
 
-                if (words.Length > 1)
-                {
-                    if (!words[1].Equals(""))
-                    {
-                        int training_times = 1;
-                        try { training_times = int.Parse(words[1]); }
-                        catch { Console.WriteLine("The parameter you've entered is invalid, training stops."); return; }
+            TrainingData[] data = Loader.loadTestMNSIT(@"D:\NertNielsEntertainment\MNIST");
+            Trainer trainer = new Trainer(data);
 
-                        Console.WriteLine("Training in progress...");
+            Matrix.table(nn.feedforward(data[0].inputs));
 
-                        for (int i = 0; i < training_times; i++)
-                        {
-                            float percentage = (int)Math.Round((double)((((float)i / (float)training_times) * (float)100)));
-                            Console.Write("\r{0}%   ", percentage);
+            trainer.Train(nn);
 
-
-                            int currentIndex = (int)Math.Floor(r.NextDouble() * training_data.Length);
-                            TrainingData train_data = training_data[currentIndex];
-                            nn.train(train_data.inputs, train_data.targets);
-                        }
-                        Console.WriteLine("");
-                        Console.WriteLine("Training is completed succesfully!");
-                        return;
-                    }
-                }
-
-                int index = (int)Math.Floor(r.NextDouble() * training_data.Length);
-                TrainingData td = training_data[index];
-                nn.train(td.inputs, td.targets);
-            } catch (Exception e) { Console.WriteLine("Training failed!"); printError(e); }
+            Matrix.table(nn.feedforward(data[0].inputs));
             Console.WriteLine("Training is completed succesfully!");
         }
 

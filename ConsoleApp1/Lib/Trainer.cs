@@ -21,27 +21,31 @@ namespace NeuralNetwork.Lib
             data = null;
         }
 
-        public NeuralNetwork Train(NeuralNetwork nn)
+        public void Train(NeuralNetwork nn)
         {
-            TrainingData[] randomized = data.OrderBy<TSource>
+            List<TrainingData> list = new List<TrainingData>(data);
 
-            for(int i = 0; i < data.Length; i++)
+            Random r = NeuralNetwork.random;
+
+            while(list.Count > 0)
             {
+                int i = r.Next(0, list.Count);
+                float loss = nn.train(list[i].inputs, list[i].labels);
+                list.RemoveAt(i);
+
+                float percentage = (int)Math.Round((double)((((float)(data.Length - list.Count) / (float)data.Length) * (float)100)));
+                Console.Write("\rDone: {0}%, Loss: {1}        ", percentage, loss);
+
                 
             }
-        }
-
-        public TKey randomize(TrainingData td)
-        {
-
         }
 
     }
 
     class TrainingData
     {
-        Matrix inputs;
-        Matrix labels;
+        public Matrix inputs;
+        public Matrix labels;
 
         public TrainingData(Matrix inputs, Matrix labels)
         {
