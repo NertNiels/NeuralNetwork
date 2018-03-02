@@ -27,16 +27,19 @@ namespace NeuralNetwork.Lib
 
             Random r = NeuralNetwork.random;
 
+            int index = 0;
+
             while(list.Count > 0)
             {
                 int i = r.Next(0, list.Count);
                 float loss = nn.train(list[i].inputs, list[i].labels);
+
                 list.RemoveAt(i);
 
                 float percentage = (int)Math.Round((double)((((float)(data.Length - list.Count) / (float)data.Length) * (float)100)));
-                Console.Write("\rDone: {0}%, Loss: {1}        ", percentage, loss);
+                Console.Write("\rDone: {0}%, Loss: {1}, Iteration: {2}    ", percentage, loss, index);
 
-                
+                i++;
             }
         }
 

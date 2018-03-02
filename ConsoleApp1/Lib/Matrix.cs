@@ -35,7 +35,8 @@ namespace NeuralNetwork.Lib
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    data[i,j] = (float)r.NextDouble() * 2 - 1;
+                    float f = (float)r.NextDouble();
+                    data[i,j] = f;
                 }
             }
         }
@@ -182,7 +183,7 @@ namespace NeuralNetwork.Lib
             {
                 for (int j = 0; j < n.cols; j++)
                 {
-                    m.data[i, j] -= n.data[i, j] - s;
+                    m.data[i, j] = n.data[i, j] - s;
                 }
             }
             return m;

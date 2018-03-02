@@ -80,7 +80,7 @@ namespace NeuralNetwork.Lib
 
             Matrix shiftx = Matrix.subtract(x, max);
 
-            Matrix exp = Matrix.exp(x);
+            Matrix exp = Matrix.exp(shiftx);
             float sumExp = Matrix.sum(exp);
 
             Matrix output = new Matrix(exp.rows, exp.cols);
@@ -90,6 +90,11 @@ namespace NeuralNetwork.Lib
                 for (int j = 0; j < exp.cols; j++)
                 {
                     output.data[i, j] = exp.data[i, j] / sumExp;
+
+                    if (float.IsNaN(output.data[i, j]))
+                    {
+                        Console.WriteLine("Here we go");
+                    }
                 }
             }
             return output;

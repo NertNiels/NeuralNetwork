@@ -63,6 +63,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         public override void initWeights(Random r, Layer prev, Layer next)
         {
             weights = new Matrix(next.nodes, nodes);
+            weights.randomize(r);
         }
     }
 }

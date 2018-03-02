@@ -316,12 +316,18 @@ namespace NeuralNetwork
                 return;
             }
 
-            TrainingData[] data = Loader.loadTestMNSIT(@"D:\NertNielsEntertainment\MNIST");
+            TrainingData[] data = Loader.loadTestMNSIT(@"C:\Users\drumm\Desktop\MNIST");
             Trainer trainer = new Trainer(data);
 
             Matrix.table(nn.feedforward(data[0].inputs));
 
+            Matrix.table(data[0].labels);
+
+
             trainer.Train(nn);
+
+            Matrix.table(data[0].labels);
+
 
             Matrix.table(nn.feedforward(data[0].inputs));
             Console.WriteLine("Training is completed succesfully!");
