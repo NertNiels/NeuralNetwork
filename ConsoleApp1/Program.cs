@@ -355,15 +355,5 @@ namespace NeuralNetwork
         }
     }
 
-    class TrainingData
-    {
-
-        public float[] inputs;
-        public float[] targets;
-        public TrainingData(float[] inputs, float[] targets)
-        {
-            this.inputs = inputs;
-            this.targets = targets;
-        }
-    }
+    
 }

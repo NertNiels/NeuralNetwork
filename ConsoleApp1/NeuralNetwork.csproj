@@ -53,9 +53,11 @@
     <Compile Include="Lib\Layers\ReluLayer.cs" />
     <Compile Include="Lib\Layers\SigmoidLayer.cs" />
     <Compile Include="Lib\Layers\SoftmaxLayer.cs" />
+    <Compile Include="Lib\Loader.cs" />
     <Compile Include="Lib\Matrix.cs" />
     <Compile Include="Lib\ModelLoader.cs" />
     <Compile Include="Lib\NeuralNetwork.cs" />
+    <Compile Include="Lib\Trainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
