@@ -271,7 +271,7 @@ namespace NeuralNetwork.Lib
 
         public static float max(Matrix m)
         {
-            float curMax = 0;
+            float curMax = m.data[0, 0];
             for(int i = 0; i < m.rows; i++)
             {
                 for(int j = 0; j < m.cols; j++)

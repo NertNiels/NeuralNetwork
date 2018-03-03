@@ -93,7 +93,7 @@ namespace NeuralNetwork.Lib
 
                     if (float.IsNaN(output.data[i, j]))
                     {
-                        Console.WriteLine("Here we go");
+                        Console.WriteLine("NaN detected");
                     }
                 }
             }

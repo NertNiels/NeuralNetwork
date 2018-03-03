@@ -264,7 +264,7 @@ namespace NeuralNetwork
                 new ConvolutionalLayer(2, 2, 3, 0, 1),
                 new Lib.Layers.Convolutional.LeakyReluLayer(),
                 new FullyConnectedLayer(12),
-                new SoftmaxLayer(2)
+                new SoftmaxLayer(5)
             };
 
             Lib.NeuralNetwork neuralNetwork = new Lib.NeuralNetwork(Lib.NeuralNetwork.random, layer);
@@ -283,7 +283,7 @@ namespace NeuralNetwork
 
             for (int i = 0; i < 10000; i++)
             {
-                neuralNetwork.train(input, new float[] { 1, 0 });
+                neuralNetwork.train(input, new float[] { 1, 0, 1, 0, 1 });
                 Console.WriteLine("Iteration: " + (i + 1));
                 output = neuralNetwork.feedforward(input);
                 Matrix.table(output);
@@ -297,14 +297,14 @@ namespace NeuralNetwork
         {
             Layer[] layer = new Layer[]
             {
-                    new ConvolutionalLayer(3, 3, 3, 0, 2),
-                    new ConvolutionalLayer(3, 3, 3, 0, 2),          //26
+                    new ConvolutionalLayer(3, 3, 3, 0, 1),
+                    new ConvolutionalLayer(3, 3, 3, 0, 1),          //26
                     new Lib.Layers.Convolutional.LeakyReluLayer(),
-                    new ConvolutionalLayer(2, 2, 3, 0, 2),          //24
+                    new ConvolutionalLayer(2, 2, 3, 0, 1),          //24
                     new Lib.Layers.Convolutional.LeakyReluLayer(),
-                    new ConvolutionalLayer(2, 2, 3, 0, 2),          //22
+                    new ConvolutionalLayer(2, 2, 3, 0, 1),          //22
                     new Lib.Layers.Convolutional.LeakyReluLayer(),
-                    new FullyConnectedLayer(27),
+                    new FullyConnectedLayer(1728),
                     new SoftmaxLayer(10)
             };
 

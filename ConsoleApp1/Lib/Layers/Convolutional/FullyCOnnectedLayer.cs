@@ -26,6 +26,11 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                     {
                         output.data[i, 0] = prev.featureMaps[f].map.data[x, y];
 
+                        if (float.IsInfinity(output.data[i, 0]))
+                        {
+                            Console.WriteLine("ja");
+                        }
+
                         i++;
                     } 
                 }

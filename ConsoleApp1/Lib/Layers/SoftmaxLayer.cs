@@ -18,6 +18,13 @@ namespace NeuralNetwork.Lib.Layers
             values = Matrix.multiply(prev.weights, prev.values);
             values.add(bias);
             values = Activation.ssoftmax(values);
+            for(int i = 0; i < values.rows; i++)
+            {
+                if (float.IsNaN(values.data[i, 0]))
+                {
+                    Console.WriteLine("Herewg");
+                }
+            }
         }
 
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)
