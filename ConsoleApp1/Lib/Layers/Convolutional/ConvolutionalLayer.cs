@@ -57,13 +57,28 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                     if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) sum +=
                                             prev.featureMaps[d].map.data[i + k, j + l] *
                                             flipped.data[k, l];
+                                    if (float.IsInfinity(flipped.data[k, l]) || float.IsNaN(flipped.data[k, l]))
+                                    {
+                                        Console.WriteLine("moi");
+                                    }
+                                    if (float.IsInfinity(prev.featureMaps[d].map.data[i + k, j + l]) || float.IsNaN(prev.featureMaps[d].map.data[i + k, j + l]))
+                                    {
+                                        Console.WriteLine("moi");
+                                    }
+                                    if (float.IsInfinity(sum) || float.IsNaN(sum))
+                                    {
+                                        Console.WriteLine("moi");
+                                    }
                                 }
                             }
                         }
 
                         featureMaps[f].map.data[mapX, mapY] = sum + prev.filters[f].bias;
                         
-                        
+                        if(float.IsInfinity(featureMaps[f].map.data[mapX, mapY]) || float.IsNaN(featureMaps[f].map.data[mapX, mapY]))
+                        {
+                            Console.WriteLine("jo");
+                        }
 
                         mapY++;
                     }
@@ -128,8 +143,9 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                                         prev.featureMaps[d].errors.data[i + k, j + l] +=
                                             featureMaps[f].errors.data[mapX, mapY] *
-                                            prev.filters[f].kernels[d].data[k, l];
+                                            flipped.data[k, l];
                                     }
+                                    
                                 }
                             }
                         }
