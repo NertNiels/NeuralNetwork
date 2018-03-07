@@ -15,9 +15,9 @@ namespace NeuralNetwork.Lib.Layers
 
         public override void doFeedForward(Layer prev)
         {
-            values = Matrix.multiply(prev.weights, prev.values);
-            values.add(bias);
-            values = Activation.ssoftmax(values);
+            Matrix newValues = Matrix.multiply(prev.weights, prev.values);
+            newValues.add(bias);
+            values = Activation.ssoftmax(newValues);
             for(int i = 0; i < values.rows; i++)
             {
                 if (float.IsNaN(values.data[i, 0]))

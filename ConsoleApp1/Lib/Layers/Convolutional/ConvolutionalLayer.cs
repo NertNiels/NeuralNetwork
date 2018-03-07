@@ -138,7 +138,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                     if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0))
                                     {
                                         deltas.data[k, l] +=
-                                            prev.featureMaps[d].map.data[i, j] *
+                                            prev.featureMaps[d].map.data[i + k, j + l] *
                                             gradient.data[mapX, mapY];
 
                                         prev.featureMaps[d].errors.data[i + k, j + l] +=
@@ -165,6 +165,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                 //Updating Weights and Biases
                 prev.filters[f].updateFilters(gradient, deltas.flip());
+                
 
             }
 
