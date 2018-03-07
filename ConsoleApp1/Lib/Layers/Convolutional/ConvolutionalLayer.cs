@@ -164,6 +164,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 #endregion
 
                 //Updating Weights and Biases
+                // Idea: instead of summing up all deltas for each filter, do it for each dimension
+                // instead. We can accomplish this by instead of Matrix deltas do Matrix[] deltas.
                 prev.filters[f].updateFilters(gradient, deltas.flip());
                 
 
