@@ -32,7 +32,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         {
             if (next == null) throw new Exception("A convolutional layer cannot be the final layer.");
 
-            for(int f = 0; f < next.featureMaps.Length; f++)
+            for(int f = 0; f < featureMaps.Length; f++)
             {
                 prev.featureMaps[f].errors = featureMaps[f].errors;
 
