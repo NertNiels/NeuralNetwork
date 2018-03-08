@@ -54,7 +54,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
-                                    if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0)) sum +=
+                                    if (!(i + k >= prev.featureMaps[d].width() || i + k < 0 || j + l >= prev.featureMaps[d].height() || j + l < 0)) sum +=
                                             prev.featureMaps[d].map.data[i + k, j + l] *
                                             flipped.data[k, l];
                                     if (float.IsInfinity(flipped.data[k, l]) || float.IsNaN(flipped.data[k, l]))
@@ -73,7 +73,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                             }
                         }
 
-                        featureMaps[f].map.data[mapX, mapY] = sum + prev.filters[f].bias;
+                        featureMaps[f].map.data[mapX, mapY] = sum;
                         
                         if(float.IsInfinity(featureMaps[f].map.data[mapX, mapY]) || float.IsNaN(featureMaps[f].map.data[mapX, mapY]))
                         {
@@ -101,16 +101,21 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
             for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width(), prev.featureMaps[f].height());
 
+            Matrix[] gradients = new Matrix[filters.Length];
+
+            //Calculating Gradients;
+            for(int i = 0; i < gradients.Length; i++)
+            {
+                gradients[i] = Matrix.hadamard(next.featureMaps[i].derivatives, featureMaps[i].errors);
+                gradients[i].multiply(NeuralNetwork.lr);
+            }
+
             for(int f = 0; f < prev.filters.Length; f++)
             {
-                //Calculating Gradient
-                Matrix gradient = Matrix.hadamard(next.featureMaps[f].derivatives, featureMaps[f].errors);
-                gradient.multiply(NeuralNetwork.lr);
-
                 //Calculating Deltas And Errors
                 #region Calculating Deltas And Errors
 
-                Matrix deltas = new Matrix(prev.filters[f].width(), prev.filters[f].height());
+                Matrix[] deltas = new Matrix[prev.filters[f].dimensions];
 
                 int mapX = 0;
                 int mapY = 0;
@@ -127,23 +132,34 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                         for (int d = 0; d < prev.filters[f].dimensions; d++)
                         {
                             Matrix flipped = prev.filters[f].kernels[d].flip();
-
+                            deltas[d] = new Matrix(prev.filters[f].width(), prev.filters[f].height());
                             
                             for (int k = 0; k < prev.filterWidth; k++)
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
 
-
-                                    if (!(i + k >= prev.featureMaps[0].width() || i + k < 0 || j + l >= prev.featureMaps[0].height() || j + l < 0))
+                                    for (int g = 0; g < gradients.Length; g++)
                                     {
-                                        deltas.data[k, l] +=
-                                            prev.featureMaps[d].map.data[i + k, j + l] *
-                                            gradient.data[mapX, mapY];
+                                        if (!(i + k >= prev.featureMaps[d].width() || i + k < 0 || j + l >= prev.featureMaps[d].height() || j + l < 0))
+                                        {
+                                            deltas[d].data[k, l] +=
+                                                prev.featureMaps[d].map.data[i + k, j + l] *
+                                                gradients[g].data[mapX, mapY];
 
-                                        prev.featureMaps[d].errors.data[i + k, j + l] +=
-                                            featureMaps[f].errors.data[mapX, mapY] *
-                                            flipped.data[k, l];
+                                            if (deltas[d].data[k,l] > 1000 || deltas[d].data[k, l] < -1000)
+                                            {
+                                                Console.WriteLine("");
+                                            }
+
+                                            prev.featureMaps[d].errors.data[i + k, j + l] +=
+                                                featureMaps[f].errors.data[mapX, mapY] *
+                                                flipped.data[k, l];
+                                            if(prev.featureMaps[d].errors.data[i + k, j + l] > 1000)
+                                            {
+                                                Console.WriteLine("");
+                                            }
+                                        }
                                     }
                                     
                                 }
@@ -166,10 +182,12 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 //Updating Weights and Biases
                 // Idea: instead of summing up all deltas for each filter, do it for each dimension
                 // instead. We can accomplish this by instead of Matrix deltas do Matrix[] deltas.
-                prev.filters[f].updateFilters(gradient, deltas.flip());
+                prev.filters[f].updateFilters(gradients[f], deltas);
+                
                 
 
             }
+
 
             #region ErrorTest
             /*

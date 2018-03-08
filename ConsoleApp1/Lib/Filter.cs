@@ -27,14 +27,14 @@ namespace NeuralNetwork.Lib
 
         public Matrix[] kernels;
 
-        public void updateFilters(Matrix gradient, Matrix deltas)
+        public void updateFilters(Matrix gradient, Matrix[] deltas)
         {
             for (int d = 0; d < dimensions; d++)
             {
-                kernels[d].add(deltas);
+                kernels[d].subtract(deltas[d].flip());
             }
 
-            bias = deltas.sum() / (gradient.rows * gradient.cols);
+            bias += gradient.sum() / (gradient.rows * gradient.cols);
         }
 
         public void initFilter(Random r, int numOfLayers, int width, int height)
