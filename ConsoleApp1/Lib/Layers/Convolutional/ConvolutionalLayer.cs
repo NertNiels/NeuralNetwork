@@ -155,7 +155,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                             prev.featureMaps[d].errors.data[i + k, j + l] +=
                                                 featureMaps[f].errors.data[mapX, mapY] *
                                                 flipped.data[k, l];
-                                            if(prev.featureMaps[d].errors.data[i + k, j + l] > 1000)
+
+                                            if (prev.featureMaps[d].errors.data[i + k, j + l] > 1000 || prev.featureMaps[d].errors.data[i + k, j + l] < -1000)
                                             {
                                                 Console.WriteLine("");
                                             }

@@ -256,6 +256,14 @@ namespace NeuralNetwork
 
             #endregion
 
+            Matrix m1 = new Matrix(3, 3);
+            m1.randomize(Lib.NeuralNetwork.random);
+            Matrix.table(m1);
+
+            Matrix m2 = m1.flip();
+            Matrix.table(m2);
+
+
             Layer[] layer = new Layer[]
             {
                 new ConvolutionalLayer(2, 2, 3, 1, 1),

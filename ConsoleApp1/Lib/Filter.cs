@@ -31,7 +31,7 @@ namespace NeuralNetwork.Lib
         {
             for (int d = 0; d < dimensions; d++)
             {
-                kernels[d].subtract(deltas[d].flip());
+                kernels[d] = deltas[d].flip();
             }
 
             bias += gradient.sum() / (gradient.rows * gradient.cols);
