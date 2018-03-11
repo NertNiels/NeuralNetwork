@@ -141,6 +141,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                                     for (int g = 0; g < gradients.Length; g++)
                                     {
+
                                         if (!(i + k >= prev.featureMaps[d].width() || i + k < 0 || j + l >= prev.featureMaps[d].height() || j + l < 0))
                                         {
                                             deltas[d].data[k, l] +=
@@ -149,7 +150,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                                             if (deltas[d].data[k,l] > 1000 || deltas[d].data[k, l] < -1000)
                                             {
-                                                Console.WriteLine("");
+                                                Console.Write("\r");
                                             }
 
                                             prev.featureMaps[d].errors.data[i + k, j + l] +=
@@ -158,7 +159,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
                                             if (prev.featureMaps[d].errors.data[i + k, j + l] > 1000 || prev.featureMaps[d].errors.data[i + k, j + l] < -1000)
                                             {
-                                                Console.WriteLine("");
+                                                Console.Write("\r");
                                             }
                                         }
                                     }
