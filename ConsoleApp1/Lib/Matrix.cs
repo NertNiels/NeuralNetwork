@@ -35,7 +35,7 @@ namespace NeuralNetwork.Lib
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    float f = (float)r.NextDouble();
+                    float f = (float)Math.Round(r.NextDouble() * 10);
                     data[i,j] = f;
                 }
             }

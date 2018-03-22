@@ -201,95 +201,19 @@ namespace NeuralNetwork
 
         static void TestProgram()
         {
-            #region TestPrograms
 
-            /*
+            Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
+            Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
 
-            TrainingData[] training_data = new TrainingData[]
-            {
-                new TrainingData(new float[]{ 0, 1 }, new float[] { 1 }),
-                new TrainingData(new float[]{ 1, 1 }, new float[] { 0 }),
-                new TrainingData(new float[]{ 0, 0 }, new float[] { 0 }),
-                new TrainingData(new float[]{ 1, 0 }, new float[] { 1 }),
-            };
+            input.initWeights(Lib.NeuralNetwork.random, null, cl);
+            input.featureMaps = new FeatureMap[1];
+            input.featureMaps[0] = new FeatureMap();
+            input.featureMaps[0].map = new Matrix(5, 5) { data = new float[5, 5] { { 5, 5, 5, 5, 5 }, { 4, 4, 4, 4, 4 }, { 3, 3, 3, 3, 3 }, { 2, 2, 2, 2, 2 }, { 1, 1, 1, 1, 1 } } };
 
-            Matrix.table(nn.feedforward(new float[] { 1, 1 }));
-            Matrix.table(nn.feedforward(new float[] { 0, 0 }));
-            Matrix.table(nn.feedforward(new float[] { 0, 1 }));
-            Matrix.table(nn.feedforward(new float[] { 1, 0 }));
+            Matrix.table(input.featureMaps[0].map);
 
-            for(int i = 0; i < 50000; i++)
-            {
-                int currentIndex = (int)Math.Floor(Lib.NeuralNetwork.random.NextDouble() * training_data.Length);
-                TrainingData train_data = training_data[currentIndex];
-                nn.train(train_data.inputs, train_data.targets);
-            }
-
-            Matrix.table(nn.feedforward(new float[] { 1, 1 }));
-            Matrix.table(nn.feedforward(new float[] { 0, 0 }));
-            Matrix.table(nn.feedforward(new float[] { 0, 1 }));
-            Matrix.table(nn.feedforward(new float[] { 1, 0 }));
-            */
-
-            /*
-            Matrix m1 = new Matrix(5, 1);
-            m1.data[0, 0] = 4;
-            m1.data[1, 0] = 44;
-            m1.data[2, 0] = 42;
-            m1.data[3, 0] = 50;
-            m1.data[4, 0] = 41;
-            Matrix.table(m1);
-
-            Console.WriteLine(Matrix.sum(m1));
-
-            Matrix m2 = Activation.softmax(m1);
-            Matrix.table(m2);
-
-            Console.WriteLine(Matrix.sum(m2));
-
-
-            Matrix m3 = Matrix.map(Activation.dsoftmax, m2);
-            Matrix.table(m3);
-
-            Console.WriteLine(Matrix.sum(m3));
-            */
-
-            #endregion
-
-            Layer[] layer = new Layer[]
-            {
-                new ConvolutionalLayer(2, 2, 3, 1, 1),
-                new ConvolutionalLayer(2, 2, 3, 0, 1),
-                new Lib.Layers.Convolutional.LeakyReluLayer(),
-                new ConvolutionalLayer(2, 2, 3, 0, 1),
-                new Lib.Layers.Convolutional.LeakyReluLayer(),
-                new FullyConnectedLayer(12),
-                new SoftmaxLayer(5)
-            };
-
-            Lib.NeuralNetwork neuralNetwork = new Lib.NeuralNetwork(Lib.NeuralNetwork.random, layer);
-
-            Matrix input = new Matrix(4, 4);
-            input.data = new float[,]
-            {
-                {1, 2, 3, 4 },
-                {5, 6, 7, 8 },
-                {9, 1, 2, 3 },
-                {4, 5, 6, 7 }
-            };
-
-            Matrix output = neuralNetwork.feedforward(input);
-            Matrix.table(output);
-
-            for (int i = 0; i < 10000; i++)
-            {
-                neuralNetwork.train(input, new float[] { 1, 0, 1, 0, 1 });
-                Console.WriteLine("Iteration: " + (i + 1));
-                output = neuralNetwork.feedforward(input);
-                Matrix.table(output);
-            }
-
-            
+            cl.doFeedForward(input);
+            Matrix.table(cl.featureMaps[0].map);
 
         }
 
