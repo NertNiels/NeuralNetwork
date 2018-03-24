@@ -204,16 +204,20 @@ namespace NeuralNetwork
 
             Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
+            Layer relu = new Lib.Layers.Convolutional.LeakyReluLayer();
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
             input.featureMaps = new FeatureMap[1];
             input.featureMaps[0] = new FeatureMap();
-            input.featureMaps[0].map = new Matrix(5, 5) { data = new float[5, 5] { { 5, 5, 5, 5, 5 }, { 4, 4, 4, 4, 4 }, { 3, 3, 3, 3, 3 }, { 2, 2, 2, 2, 2 }, { 1, 1, 1, 1, 1 } } };
+            input.featureMaps[0].map = new Matrix(2, 2) { data = new float[2, 2] { { 5, 5 }, { 5, 5 } } };
 
             Matrix.table(input.featureMaps[0].map);
 
             cl.doFeedForward(input);
-            Matrix.table(cl.featureMaps[0].map);
+            relu.doFeedForward(cl);
+            Matrix.table(relu.featureMaps[0].map);
+
+
 
         }
 
