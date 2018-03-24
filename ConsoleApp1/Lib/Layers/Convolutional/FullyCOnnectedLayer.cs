@@ -15,14 +15,14 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
         public override void doFeedForward(Layer prev)
         {
-            Matrix output = new Matrix((prev.featureMaps[0].width() * prev.featureMaps[0].height()) * prev.featureMaps.Length, 1);
+            Matrix output = new Matrix((prev.featureMaps[0].width * prev.featureMaps[0].height) * prev.featureMaps.Length, 1);
 
             int i = 0;
             for(int f = 0; f < prev.featureMaps.Length; f++)
             {
-                for(int x = 0; x < prev.featureMaps[f].width(); x++)
+                for(int x = 0; x < prev.featureMaps[f].width; x++)
                 {
-                    for (int y = 0; y < prev.featureMaps[f].height(); y++)
+                    for (int y = 0; y < prev.featureMaps[f].height; y++)
                     {
                         output.data[i, 0] = prev.featureMaps[f].map.data[x, y];
 
@@ -53,10 +53,10 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             int i = 0;
             for(int f = 0; f < prev.featureMaps.Length; f++)
             {
-                featureMaps[f].errors = new Matrix(featureMaps[f].width(), featureMaps[f].height());
-                for(int x = 0; x < featureMaps[f].width(); x++)
+                featureMaps[f].errors = new Matrix(featureMaps[f].width, featureMaps[f].height);
+                for(int x = 0; x < featureMaps[f].width; x++)
                 {
-                    for(int y = 0; y <featureMaps[f].height(); y++)
+                    for(int y = 0; y <featureMaps[f].height; y++)
                     {
                         prev.featureMaps[f].errors.data[x, y] = errors.data[i, 0];
                         i++;

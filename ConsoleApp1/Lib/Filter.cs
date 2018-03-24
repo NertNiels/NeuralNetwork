@@ -44,7 +44,8 @@ namespace NeuralNetwork.Lib
             for(int d = 0; d < dimensions; d++)
             {
                 kernels[d] = new Matrix(width, height);
-                kernels[d].randomize(r);
+
+                kernels[d].add(2);
             }
             bias = (float)r.NextDouble();
         }
@@ -52,16 +53,9 @@ namespace NeuralNetwork.Lib
 
     class FeatureMap
     {
-        public int width()
-        {
-            if (map == null) return 0;
-            return map.rows;
-        }
-        public int height()
-        {
-            if (map == null) return 0;
-            return map.cols;
-        }
+        public int width { get { if (map == null) return 0; return map.rows; } }
+        public int height { get { if (map == null) return 0; return map.cols; } }
+
 
         public Matrix errors;
         public Matrix derivatives;

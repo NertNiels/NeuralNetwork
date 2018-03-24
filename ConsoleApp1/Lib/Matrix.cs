@@ -313,11 +313,12 @@ namespace NeuralNetwork.Lib
             if (m == null) return;
             for (int i = 0; i < m.rows; i++)
             {
+
                 for (int j = 0; j < m.cols; j++)
                 {
-                    Console.Write(m.data[i,j] + ", ");
+                    Console.Write("|" + m.data[i,j] + "\t");
                 }
-                Console.WriteLine("");
+                Console.WriteLine("|");
             }
             Console.WriteLine("");
         }

@@ -28,8 +28,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
         {
             //throw new NotImplementedException();
 
-            int width = (prev.featureMaps[0].width() - filterWidth + (2 * padding)) / stride + 1;
-            int height = (prev.featureMaps[0].height() - filterHeight + (2 * padding)) / stride + 1;
+            int width = (prev.featureMaps[0].width - filterWidth + (2 * padding)) / stride + 1;
+            int height = (prev.featureMaps[0].height - filterHeight + (2 * padding)) / stride + 1;
 
             featureMaps = new FeatureMap[prev.filters.Length];
                         
@@ -54,7 +54,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                             {
                                 for (int l = 0; l < prev.filterHeight; l++)
                                 {
-                                    if (!(i + k >= prev.featureMaps[d].width() || i + k < 0 || j + l >= prev.featureMaps[d].height() || j + l < 0)) sum +=
+                                    if (!(i + k >= prev.featureMaps[d].width || i + k < 0 || j + l >= prev.featureMaps[d].height || j + l < 0)) sum +=
                                             prev.featureMaps[d].map.data[i + k, j + l] *
                                             flipped.data[k, l];
                                     if (float.IsInfinity(flipped.data[k, l]) || float.IsNaN(flipped.data[k, l]))
@@ -99,7 +99,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 throw new Exception("A Convolutional layer must have an activation layer behind it in order to make it work.");
             }
 
-            for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width(), prev.featureMaps[f].height());
+            for (int f = 0; f < prev.featureMaps.Length; f++) prev.featureMaps[f].errors = new Matrix(prev.featureMaps[f].width, prev.featureMaps[f].height);
 
             Matrix[] gradients = new Matrix[filters.Length];
 
@@ -120,8 +120,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                 int mapX = 0;
                 int mapY = 0;
 
-                int width = (prev.featureMaps[0].width() - filterWidth + 2 * padding) / stride + 1;
-                int height = (prev.featureMaps[0].height() - filterHeight + 2 * padding) / stride + 1;
+                int width = (prev.featureMaps[0].width - filterWidth + 2 * padding) / stride + 1;
+                int height = (prev.featureMaps[0].height - filterHeight + 2 * padding) / stride + 1;
 
                 //featureMaps[f] = new FeatureMap() { map = new Matrix(width, height) };
 
@@ -142,7 +142,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                                     for (int g = 0; g < gradients.Length; g++)
                                     {
 
-                                        if (!(i + k >= prev.featureMaps[d].width() || i + k < 0 || j + l >= prev.featureMaps[d].height() || j + l < 0))
+                                        if (!(i + k >= prev.featureMaps[d].width || i + k < 0 || j + l >= prev.featureMaps[d].height || j + l < 0))
                                         {
                                             deltas[d].data[k, l] +=
                                                 prev.featureMaps[d].map.data[i + k, j + l] *

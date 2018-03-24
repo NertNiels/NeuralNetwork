@@ -15,9 +15,9 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
             for(int i = 0; i < featureMaps.Length; i++)
             {
                 featureMaps[i] = new FeatureMap() { map = Matrix.map(Activation.lrelu, prev.featureMaps[i].map) };
-                for(int j = 0; j < featureMaps[i].width(); j++)
+                for(int j = 0; j < featureMaps[i].width; j++)
                 {
-                    for(int k = 0; k < featureMaps[i].height(); k++)
+                    for(int k = 0; k < featureMaps[i].height; k++)
                     {
                         if(float.IsInfinity(featureMaps[i].map.data[j,k]))
                         {

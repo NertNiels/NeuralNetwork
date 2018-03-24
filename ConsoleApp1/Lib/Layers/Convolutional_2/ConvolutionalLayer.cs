@@ -26,8 +26,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
 
         public override void doFeedForward(Layer prev)
         {
-            double outWF = ((prev.featureMaps[0].width() - prev.filterWidth + (2f * padding)) / stride) + 1;
-            double outHF = ((prev.featureMaps[0].height() - prev.filterHeight + (2f * padding)) / stride) + 1;
+            double outWF = (prev.featureMaps[0].width - prev.filterWidth + 2 * padding) / (double)stride + 1;
+            double outHF = (prev.featureMaps[0].height - prev.filterHeight + 2 * padding) / (double)stride + 1;
 
             if (outWF - Math.Floor(outWF) != 0 || outHF - Math.Floor(outHF) != 0) throw new ArgumentException("This stride isn't valid for this layer.");
 
@@ -45,9 +45,9 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
              
                 for (int d = 0; d < prev.filters[f].dimensions; d++)
                 {
-                    for (int x = -padding; x < prev.featureMaps[d].width() + padding; x += stride)
+                    for (int x = -padding; x < prev.featureMaps[d].width - prev.filterWidth + 1 + padding; x += stride)
                     {
-                        for (int y = -padding; y < prev.featureMaps[d].height() + padding; y += stride)
+                        for (int y = -padding; y < prev.featureMaps[d].height - prev.filterHeight + 1 + padding; y += stride)
                         {
                             float sum = 0;
 
@@ -57,7 +57,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                             {
                                 for (int fy = 0; fy < prev.filterHeight; fy++)
                                 {
-                                    if (!(x + fx < 0 || x + fx >= prev.featureMaps[f].width() || y + fy < 0 || y + fy >= prev.featureMaps[f].height())) sum +=
+                                    if (!(x + fx < 0 || x + fx >= prev.featureMaps[f].width || y + fy < 0 || y + fy >= prev.featureMaps[f].height)) sum +=
                                               flip.data[fx, fy] *
                                               prev.featureMaps[f].map.data[x + fx, y + fy];
                                 }
