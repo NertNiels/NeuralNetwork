@@ -202,20 +202,29 @@ namespace NeuralNetwork
         static void TestProgram()
         {
 
-            Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
-            Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 1, 1);
-            Layer relu = new Lib.Layers.Convolutional.LeakyReluLayer();
+            Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
+            Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
+            Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
             input.featureMaps = new FeatureMap[1];
             input.featureMaps[0] = new FeatureMap();
-            input.featureMaps[0].map = new Matrix(2, 2) { data = new float[2, 2] { { 5, 5 }, { 5, 5 } } };
+            input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } } };
 
+            Console.WriteLine("Input:");
             Matrix.table(input.featureMaps[0].map);
 
             cl.doFeedForward(input);
             relu.doFeedForward(cl);
+            Console.WriteLine("Output:");
             Matrix.table(relu.featureMaps[0].map);
+
+            Matrix targets = new Matrix(3, 3) { data = new float[3, 3] { { 20, 20, 20 }, { 20, 20, 20 }, { 20, 20, 20 } } };
+
+            Matrix errors = Matrix.subtract(targets, relu.featureMaps[0].map);
+            relu.featureMaps[0].errors = errors;
+            relu.doTrain(cl, null, null, null);
+            cl.doTrain(input, relu, null, null);
 
 
 

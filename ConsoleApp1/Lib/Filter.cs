@@ -45,7 +45,8 @@ namespace NeuralNetwork.Lib
             {
                 kernels[d] = new Matrix(width, height);
 
-                kernels[d].add(2);
+                kernels[d].add(1);
+                kernels[d].multiply(0.5f);
             }
             bias = (float)r.NextDouble();
         }
@@ -59,6 +60,7 @@ namespace NeuralNetwork.Lib
 
         public Matrix errors;
         public Matrix derivatives;
+        public Matrix gradients { get { return Matrix.hadamard(derivatives, errors); } }
 
         public Matrix map;
     }
