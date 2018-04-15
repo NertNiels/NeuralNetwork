@@ -209,7 +209,7 @@ namespace NeuralNetwork
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
             input.featureMaps = new FeatureMap[1];
             input.featureMaps[0] = new FeatureMap();
-            input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } } };
+            input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 1, 2, 3, 4 }, { 2, 4, 6, 8 }, { 3, 6, 9, 12 }, { 4, 8, 12, 16 } } };
 
             Console.WriteLine("Input:");
             Matrix.table(input.featureMaps[0].map);
