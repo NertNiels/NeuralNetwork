@@ -207,6 +207,7 @@ namespace NeuralNetwork
             Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
+            Matrix.table(input.filters[0].kernels[0]);
             input.featureMaps = new FeatureMap[1];
             input.featureMaps[0] = new FeatureMap();
             input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 1, 2, 3, 4 }, { 2, 4, 6, 8 }, { 3, 6, 9, 12 }, { 4, 8, 12, 16 } } };

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using NeuralNetwork.Lib.Layers;
-
 namespace NeuralNetwork.Lib.Layers.Convolutional_2
 {
     class ConvolutionalLayer : Layer
@@ -26,7 +24,6 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
 
             this.filterWidth = filterWidth;
             this.filterHeight = filterHeight;
-            layer = new DropoutLayer();
         }
 
         public override void doFeedForward(Layer prev)

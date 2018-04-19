@@ -45,8 +45,7 @@ namespace NeuralNetwork.Lib
             {
                 kernels[d] = new Matrix(width, height);
 
-                kernels[d].add(2);
-                kernels[d].multiply(0.5f);
+                kernels[d].data = new float[,] { { 3, 2 }, { 1, 0 } };
             }
             bias = (float)r.NextDouble();
         }
