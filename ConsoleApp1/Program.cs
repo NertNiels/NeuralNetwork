@@ -201,7 +201,7 @@ namespace NeuralNetwork
 
         static void TestProgram()
         {
-
+            
             Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();

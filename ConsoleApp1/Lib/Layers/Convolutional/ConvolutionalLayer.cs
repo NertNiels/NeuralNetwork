@@ -22,6 +22,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
 
             this.filterWidth = filterWidth;
             this.filterHeight = filterHeight;
+
+            
         }
 
         public override void doFeedForward(Layer prev)
