@@ -10,7 +10,7 @@ namespace NeuralNetwork.Lib
 {
     class NeuralNetwork
     {
-        public static float lr = 0.1f;
+        public static float lr = 0.001f;
 
         public static bool isTraining = false;
 

@@ -86,7 +86,7 @@ namespace NeuralNetwork.Lib
 
             if (!(m.rows == n.rows && m.cols == n.cols))
             {
-                Console.WriteLine("Matrices must have the same dimentions");
+                Console.WriteLine("Matrices must have the same dimensions");
                 return null;
             }
 

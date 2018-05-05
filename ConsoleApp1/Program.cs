@@ -207,27 +207,41 @@ namespace NeuralNetwork
             Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
-            Matrix.table(input.filters[0].kernels[0]);
-            input.featureMaps = new FeatureMap[1];
-            input.featureMaps[0] = new FeatureMap();
-            input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 1, 2, 3, 4 }, { 2, 4, 6, 8 }, { 3, 6, 9, 12 }, { 4, 8, 12, 16 } } };
 
-            Console.WriteLine("Input:");
-            Matrix.table(input.featureMaps[0].map);
+            for (int i = 0; i < 2000; i++)
+            {
+                Console.WriteLine("Filter:");
+                Matrix.table(input.filters[0].kernels[0]);
+                input.featureMaps = new FeatureMap[1];
+                input.featureMaps[0] = new FeatureMap();
+                input.featureMaps[0].map = new Matrix(4, 4) { data = new float[4, 4] { { 1, 2, 3, 4 }, { 2, 4, 6, 8 }, { 3, 6, 9, 12 }, { 4, 8, 12, 16 } } };
 
-            cl.doFeedForward(input);
-            relu.doFeedForward(cl);
-            Console.WriteLine("Output:");
-            Matrix.table(relu.featureMaps[0].map);
+                Console.WriteLine("Input:");
+                Matrix.table(input.featureMaps[0].map);
 
-            Matrix targets = new Matrix(3, 3) { data = new float[3, 3] { { 20, 20, 20 }, { 20, 20, 20 }, { 20, 20, 20 } } };
+                cl.doFeedForward(input);
+                relu.doFeedForward(cl);
+                Console.WriteLine("Output:");
+                Matrix.table(relu.featureMaps[0].map);
 
-            Matrix errors = Matrix.subtract(targets, relu.featureMaps[0].map);
-            relu.featureMaps[0].errors = errors;
-            relu.doTrain(cl, null, null, null);
-            cl.doTrain(input, relu, null, null);
+                Matrix targets = new Matrix(3, 3) { data = new float[3, 3] { { 9f, 14.5f, 20f }, { 14f, 22.5f, 31f }, { 19f, 30.5f, 42f } } };
 
+                Console.WriteLine("Targets:");
+                Matrix.table(targets);
 
+                Matrix errors = Matrix.subtract(targets, relu.featureMaps[0].map);
+
+                Console.WriteLine("Errors:");
+                Matrix.table(errors);
+
+                relu.featureMaps[0].errors = errors;
+                relu.doTrain(cl, null, null, null);
+                Console.WriteLine("Derivatives:");
+                Matrix.table(relu.featureMaps[0].derivatives);
+
+                cl.doTrain(input, relu, null, null);
+
+            }
 
         }
 

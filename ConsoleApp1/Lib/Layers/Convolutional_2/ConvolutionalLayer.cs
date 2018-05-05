@@ -103,7 +103,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                     {
                         for (int y = -padding; y < prev.featureMaps[f].height - prev.filterHeight + 1 + padding; y += stride)
                         {
-                            
+                                
                             for(int fx = 0; fx < flip.cols; fx++)
                             {
                                 for(int fy = 0; fy < flip.rows; fy++)
@@ -130,6 +130,11 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                 }
 
                 prev.filters[f].updateFilters(gradients, deltas);
+
+                Console.WriteLine("Gradients:");
+                Matrix.table(gradients);
+                Console.WriteLine("Deltas:");
+                Matrix.table(deltas[0]);
             }
         }
 
