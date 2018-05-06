@@ -205,10 +205,11 @@ namespace NeuralNetwork
             Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
+            Layer fullyConnect = new Lib.Layers.Convolutional_2.FullyConnectedLayer(16);
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
 
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 Console.WriteLine("Filter:");
                 Matrix.table(input.filters[0].kernels[0]);
@@ -221,19 +222,28 @@ namespace NeuralNetwork
 
                 cl.doFeedForward(input);
                 relu.doFeedForward(cl);
-                Console.WriteLine("Output:");
-                Matrix.table(relu.featureMaps[0].map);
+                fullyConnect.doFeedForward(relu);
 
-                Matrix targets = new Matrix(3, 3) { data = new float[3, 3] { { 9f, 14.5f, 20f }, { 14f, 22.5f, 31f }, { 19f, 30.5f, 42f } } };
+                Console.WriteLine("Output:");
+                Matrix.table(fullyConnect.values);
+
+                Matrix targets = new Matrix(9, 1) { data = new float[9, 1] { { 9f }, { 14.5f }, { 20f }, { 14f }, { 22.5f }, { 31f }, { 19f }, { 30.5f }, { 42f } } };
 
                 Console.WriteLine("Targets:");
                 Matrix.table(targets);
 
-                Matrix errors = Matrix.subtract(targets, relu.featureMaps[0].map);
+                Matrix errors = Matrix.subtract(targets, fullyConnect.values);
 
                 Console.WriteLine("Errors:");
                 Matrix.table(errors);
 
+                Console.WriteLine("Learning Rate: " + Lib.NeuralNetwork.lr);
+                //Lib.NeuralNetwork.setLearningRate(errors);
+                Console.WriteLine("New Learning Rate: " + Lib.NeuralNetwork.lr);
+                Console.WriteLine();
+
+                fullyConnect.errors = errors;
+                fullyConnect.doTrain(relu, null, null, null);
                 relu.featureMaps[0].errors = errors;
                 relu.doTrain(cl, null, null, null);
                 Console.WriteLine("Derivatives:");

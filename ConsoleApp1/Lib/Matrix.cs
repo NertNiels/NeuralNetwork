@@ -35,7 +35,7 @@ namespace NeuralNetwork.Lib
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    float f = (float)Math.Round(r.NextDouble() * 10);
+                    float f = (float)r.NextDouble();
                     data[i,j] = f;
                 }
             }
@@ -193,7 +193,7 @@ namespace NeuralNetwork.Lib
         {
             if (a.rows != b.rows || a.cols != b.cols)
             {
-                throw new Exception("Matrices must have the same dimentions");
+                throw new Exception("Matrices must have the same dimensions");
             }
             Matrix output = new Matrix(a.rows, a.cols);
             for (int i = 0; i < a.rows; i++)

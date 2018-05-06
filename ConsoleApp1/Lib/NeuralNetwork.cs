@@ -160,6 +160,19 @@ namespace NeuralNetwork.Lib
             }
             return output;
         }
+
+        public static void setLearningRate(Matrix errors)
+        {
+            for(int i = 0; i < errors.rows; i++)
+            {
+                for(int j = 0; j < errors.cols; j++)
+                {
+                    if (errors.data[i, j] < 0.1f && lr > 0.0001f) lr = 0.0001f;
+                    if (errors.data[i, j] < 0.01f && lr > 0.00001f) lr = 0.00001f;
+                    if (errors.data[i, j] < 0.001f && lr > 0.000001f) lr = 0.000001f;
+                }
+            }
+        }
     }
 
     

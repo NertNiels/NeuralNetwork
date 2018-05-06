@@ -66,7 +66,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                                 }
                             }
 
-                            featureMaps[f].map.data[mapX, mapY] += sum;
+                            featureMaps[f].map.data[mapX, mapY] += sum + prev.filters[f].bias;
                             mapY++;
                         }
                         mapX++;
