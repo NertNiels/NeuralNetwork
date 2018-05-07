@@ -49,7 +49,7 @@
     <Compile Include="Lib\Layers\Convolutional\ConvolutionalLayer.cs" />
     <Compile Include="Lib\Layers\Convolutional\FullyConnectedLayer.cs" />
     <Compile Include="Lib\Layers\Convolutional_2\ConvolutionalLayer.cs" />
-    <Compile Include="Lib\Layers\Convolutional_2\FullyConnectedLayer.cs" />
+    <Compile Include="Lib\Layers\Convolutional_2\FlattenLayer.cs" />
     <Compile Include="Lib\Layers\Convolutional_2\LeakyReluLayer.cs" />
     <Compile Include="Lib\Layers\DropoutLayer.cs" />
     <Compile Include="Lib\Layers\LeakyReluLayer.cs" />

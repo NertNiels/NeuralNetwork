@@ -89,7 +89,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                 int mapX = 0;
                 int mapY = 0;
 
-                Matrix gradients = featureMaps[f].gradients;
+                Matrix gradients = Matrix.hadamard(featureMaps[f].derivatives, featureMaps[f].errors);
                 gradients.multiply(NeuralNetwork.lr);
 
                 Matrix[] deltas = new Matrix[prev.filters[f].dimensions];

@@ -205,7 +205,7 @@ namespace NeuralNetwork
             Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
-            Layer fullyConnect = new Lib.Layers.Convolutional_2.FullyConnectedLayer(16);
+            Layer fullyConnect = new Lib.Layers.Convolutional_2.FlattenLayer(16);
 
             input.initWeights(Lib.NeuralNetwork.random, null, cl);
 
@@ -244,8 +244,9 @@ namespace NeuralNetwork
 
                 fullyConnect.errors = errors;
                 fullyConnect.doTrain(relu, null, null, null);
-                relu.featureMaps[0].errors = errors;
-                relu.doTrain(cl, null, null, null);
+                fullyConnect.errors = errors;
+                fullyConnect.doTrain(relu, null, null, null);
+                relu.doTrain(cl, fullyConnect, null, null);
                 Console.WriteLine("Derivatives:");
                 Matrix.table(relu.featureMaps[0].derivatives);
 

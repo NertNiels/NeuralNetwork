@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork.Lib.Layers.Convolutional_2
 {
-    class FullyConnectedLayer : Layer
+    class FlattenLayer : Layer
     {
-        public FullyConnectedLayer(int nodes)
+        public FlattenLayer(int nodes)
         {
             this.nodes = nodes;
         }
@@ -18,9 +18,9 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
             Matrix output = new Matrix((prev.featureMaps[0].width * prev.featureMaps[0].height) * prev.featureMaps.Length, 1);
 
             int i = 0;
-            for(int f = 0; f < prev.featureMaps.Length; f++)
+            for (int f = 0; f < prev.featureMaps.Length; f++)
             {
-                for(int x = 0; x < prev.featureMaps[f].width; x++)
+                for (int x = 0; x < prev.featureMaps[f].width; x++)
                 {
                     for (int y = 0; y < prev.featureMaps[f].height; y++)
                     {
@@ -32,7 +32,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                         }
 
                         i++;
-                    } 
+                    }
                 }
             }
 
@@ -40,23 +40,20 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
             values = output;
 
             featureMaps = prev.featureMaps;
-            
+
         }
 
         public override void doTrain(Layer prev, Layer next, Matrix targets, Matrix outputs)
         {
-            //if (next == null) throw new Exception("The last layer of a neural network cannot be a fully connected layer.");
-
-            Matrix weights_T = Matrix.transpose(weights);
-            errors = Matrix.multiply(weights_T, next.errors);
+            
 
             int i = 0;
-            for(int f = 0; f < prev.featureMaps.Length; f++)
+            for (int f = 0; f < prev.featureMaps.Length; f++)
             {
                 featureMaps[f].errors = new Matrix(featureMaps[f].width, featureMaps[f].height);
-                for(int x = 0; x < featureMaps[f].width; x++)
+                for (int x = 0; x < featureMaps[f].width; x++)
                 {
-                    for(int y = 0; y <featureMaps[f].height; y++)
+                    for (int y = 0; y < featureMaps[f].height; y++)
                     {
                         prev.featureMaps[f].errors.data[x, y] = errors.data[i, 0];
                         i++;
