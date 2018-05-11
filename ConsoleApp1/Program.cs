@@ -201,13 +201,15 @@ namespace NeuralNetwork
 
         static void TestProgram()
         {
-            
-            Layer cl = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
-            Layer relu = new Lib.Layers.Convolutional_2.LeakyReluLayer();
+            Layer cl1 = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
+            Layer relu1 = new Lib.Layers.Convolutional_2.LeakyReluLayer();
+            Layer cl2 = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
+            Layer relu2 = new Lib.Layers.Convolutional_2.LeakyReluLayer();
             Layer fullyConnect = new Lib.Layers.Convolutional_2.FlattenLayer(16);
 
-            input.initWeights(Lib.NeuralNetwork.random, null, cl);
+            input.initWeights(Lib.NeuralNetwork.random, null, cl1);
+            cl1.initWeights(Lib.NeuralNetwork.random, null, cl2);
 
             for (int i = 0; i < 1000; i++)
             {
@@ -220,9 +222,11 @@ namespace NeuralNetwork
                 Console.WriteLine("Input:");
                 Matrix.table(input.featureMaps[0].map);
 
-                cl.doFeedForward(input);
-                relu.doFeedForward(cl);
-                fullyConnect.doFeedForward(relu);
+                cl1.doFeedForward(input);
+                relu1.doFeedForward(cl1);
+                cl2.doFeedForward(relu1);
+                relu2.doFeedForward(cl2);
+                fullyConnect.doFeedForward(relu2);
 
                 Console.WriteLine("Output:");
                 Matrix.table(fullyConnect.values);
@@ -243,14 +247,14 @@ namespace NeuralNetwork
                 Console.WriteLine();
 
                 fullyConnect.errors = errors;
-                fullyConnect.doTrain(relu, null, null, null);
+                fullyConnect.doTrain(relu1, null, null, null);
                 fullyConnect.errors = errors;
-                fullyConnect.doTrain(relu, null, null, null);
-                relu.doTrain(cl, fullyConnect, null, null);
+                fullyConnect.doTrain(relu1, null, null, null);
+                relu1.doTrain(cl1, fullyConnect, null, null);
                 Console.WriteLine("Derivatives:");
-                Matrix.table(relu.featureMaps[0].derivatives);
+                Matrix.table(relu1.featureMaps[0].derivatives);
 
-                cl.doTrain(input, relu, null, null);
+                cl1.doTrain(input, relu1, null, null);
 
             }
 
