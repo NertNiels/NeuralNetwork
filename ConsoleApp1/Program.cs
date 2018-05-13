@@ -211,6 +211,10 @@ namespace NeuralNetwork
             input.initWeights(Lib.NeuralNetwork.random, null, cl1);
             cl1.initWeights(Lib.NeuralNetwork.random, null, cl2);
 
+           // input.filters[0].kernels[0].data = new float[2, 2] { { 0, 1 }, { 2, 3 } };
+           // cl1.filters[0].kernels[0].data = new float[2, 2] { { 0, 1 }, { 2, 3 } };
+
+
             for (int i = 0; i < 1000; i++)
             {
                 Console.WriteLine("Filter:");
@@ -231,7 +235,7 @@ namespace NeuralNetwork
                 Console.WriteLine("Output:");
                 Matrix.table(fullyConnect.values);
 
-                Matrix targets = new Matrix(9, 1) { data = new float[9, 1] { { 9f }, { 14.5f }, { 20f }, { 14f }, { 22.5f }, { 31f }, { 19f }, { 30.5f }, { 42f } } };
+                Matrix targets = new Matrix(16, 1) { data = new float[16, 1] { { 1f }, { 2f }, { 3f }, { 4f }, { 5f }, { 6f }, { 7f }, { 8f }, { 9f }, { 10f }, { 11f }, { 12f }, { 13f }, { 14f }, { 15f }, { 16f }  } };
 
                 Console.WriteLine("Targets:");
                 Matrix.table(targets);
