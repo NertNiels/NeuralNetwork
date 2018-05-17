@@ -200,7 +200,7 @@ namespace NeuralNetwork
         }
 
         static void TestProgram()
-        {/*
+        {
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer cl1 = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer relu1 = new Lib.Layers.Convolutional_2.LeakyReluLayer();
@@ -260,8 +260,9 @@ namespace NeuralNetwork
 
                 cl1.doTrain(input, relu1, null, null);
 
-            }*/
+            }
 
+            /*
             Matrix output = new Matrix(2, 2) { data = new float[2, 2] { { 2, 3 }, { 3, 2 } } };
             Console.WriteLine("Output Errors");
             Matrix.table(output);
@@ -279,6 +280,9 @@ namespace NeuralNetwork
             int width = 3;
             int height = 3;
 
+            int fWidth = flipFilter.cols - 1;
+            int fHeight = flipFilter.rows - 1;
+
             for(int x = 0; x < width; x++)
             {
                 for(int y = 0; y < height; y++)
@@ -287,10 +291,10 @@ namespace NeuralNetwork
                     {
                         for (int fy = 0; fy < 2; fy++)
                         {
-                            if(!(x - 1 + fx < 0 || x - 1 + fx > 2-1 || y - 1 + fy < 0 || y - 1 + fy > 2-1))
+                            if(!(x - fWidth + fx < 0 || x - fWidth + fx > fWidth - 1 || y - fHeight + fy < 0 || y - fHeight + fy > fHeight - 1))
                             {
                                 input.data[x, y] +=
-                                    output.data[x - 1 + fx, y - 1 + fy] *
+                                    output.data[x - fWidth + fx, y - fHeight + fy] *
                                     flipFilter.data[fx, fy];
                             }
                         }
@@ -300,6 +304,8 @@ namespace NeuralNetwork
 
             Console.WriteLine("Input Errors");
             Matrix.table(input);
+
+            */
 
             
 

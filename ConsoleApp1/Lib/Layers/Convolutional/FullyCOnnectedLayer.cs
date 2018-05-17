@@ -34,6 +34,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional
                         i++;
                     } 
                 }
+
+
             }
 
 

@@ -97,6 +97,8 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                 for(int d = 0; d < prev.filters[f].dimensions; d++)
                 {
                     Matrix flip = prev.filters[f].kernels[d].flip();
+                    int fWidth = flip.cols;
+                    int fHeight = flip.rows;
                     deltas[d] = new Matrix(prev.filterWidth, prev.filterHeight);
 
                     for(int x = -padding; x < prev.featureMaps[f].width - prev.filterWidth + 1 + padding; x += stride)
@@ -113,9 +115,12 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                                         deltas[d].data[fx, fy] +=
                                             prev.featureMaps[f].map.data[x + fx, y + fy] *
                                             gradients.data[mapX, mapY];
-
-                                        prev.featureMaps[f].errors.data[ x+ fx, y + fy] +=
-                                            featureMaps[f].errors.data[mapX, mapY] *
+                                        
+                                    }
+                                    if (!(mapX - fWidth + fx < 0 || mapX - fWidth + fx > fWidth - 1 || mapY - fHeight + fy < 0 || mapY - fHeight + fy > fHeight - 1))
+                                    {
+                                        prev.featureMaps[f].errors.data[x, y] +=
+                                            featureMaps[f].errors.data[x - fWidth + fx, y - fHeight + fy] *
                                             flip.data[fx, fy];
                                     }
                                 }
