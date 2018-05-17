@@ -200,7 +200,7 @@ namespace NeuralNetwork
         }
 
         static void TestProgram()
-        {
+        {/*
             Layer input = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer cl1 = new Lib.Layers.Convolutional_2.ConvolutionalLayer(2, 2, 1, 0, 1);
             Layer relu1 = new Lib.Layers.Convolutional_2.LeakyReluLayer();
@@ -260,7 +260,49 @@ namespace NeuralNetwork
 
                 cl1.doTrain(input, relu1, null, null);
 
+            }*/
+
+            Matrix output = new Matrix(2, 2) { data = new float[2, 2] { { 2, 3 }, { 3, 2 } } };
+            Console.WriteLine("Output Errors");
+            Matrix.table(output);
+
+            Matrix filter = new Matrix(2, 2) { data = new float[2, 2] { { 2, 1.5f }, { 1, 0.5f } } };
+            Console.WriteLine("Filter");
+            Matrix.table(filter);
+
+            Matrix flipFilter = filter.flip();
+            Console.WriteLine("Flipped Filter");
+            Matrix.table(flipFilter);
+
+            Matrix input = new Matrix(3, 3);
+
+            int width = 3;
+            int height = 3;
+
+            for(int x = 0; x < width; x++)
+            {
+                for(int y = 0; y < height; y++)
+                {
+                    for (int fx = 0; fx < 2; fx++)
+                    {
+                        for (int fy = 0; fy < 2; fy++)
+                        {
+                            if(!(x - 1 + fx < 0 || x - 1 + fx > 2-1 || y - 1 + fy < 0 || y - 1 + fy > 2-1))
+                            {
+                                input.data[x, y] +=
+                                    output.data[x - 1 + fx, y - 1 + fy] *
+                                    flipFilter.data[fx, fy];
+                            }
+                        }
+                    }
+                }
             }
+
+            Console.WriteLine("Input Errors");
+            Matrix.table(input);
+
+            
+
 
         }
 

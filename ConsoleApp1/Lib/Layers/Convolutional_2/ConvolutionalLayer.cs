@@ -114,7 +114,7 @@ namespace NeuralNetwork.Lib.Layers.Convolutional_2
                                             prev.featureMaps[f].map.data[x + fx, y + fy] *
                                             gradients.data[mapX, mapY];
 
-                                        prev.featureMaps[f].errors.data[x + fx, y + fy] +=
+                                        prev.featureMaps[f].errors.data[ x+ fx, y + fy] +=
                                             featureMaps[f].errors.data[mapX, mapY] *
                                             flip.data[fx, fy];
                                     }
